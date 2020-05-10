@@ -1,0 +1,84 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const ll maxn=1e14+10;
+
+//注释掉的dp部分算法复杂度O(nk) 1e10 我是真的垃圾 提交后t了才检查发现复杂度是1e10
+//不喜欢打草稿写状态转移方程坏习惯一定要改！
+//此题为dp优化
+
+//题意为n个元素，每个元素有一个能量值，每次至少消耗k个元素释放魔法，消耗的魔法值为这k个元素中的最大值减去最小值，要求输出使用完这n个元素需要消耗的最小魔法值
+//1<=k<=n<=3e5
+
+//首先，对于我们每次取假设m个元素，这m个元素一定要是从小到大排序好的序列中连续的m个，这样子才能保证我们最后的答案最小
+//因此第一步操作先对所有元素按照能量值进行排序
+//dp[i]记录消耗前i个元素所需的最小魔法值，则状态转移方程为dp[i]=min(dp[j]+num[i]-num[j+1])  (j取1到j-k)//这里dp[j]已经取完了前j个元素，剩下的j+1到i个元素消耗的魔法值即为num[i]=num[j+1]
+//这里可以对j的取值范围再优化一下，但是仅仅优化这里复杂度任然会是O(nk)，会达到1e10
+
+//起始可以发现状态转移方程中的min中的num[i]是一个固定值，把它提取出来，转移方程就变成了
+//dp[i]=min(dp[j]-num[j+1]){j取1到j-k}+num[i]
+//用一个cas变量存储min(dp[j]-num[j+1],跟着i下标一起转移过去，就可以将dp的转移过程优化到O（1）
+//最终复杂度O（n）
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n,k;
+    cin>>n>>k;
+    vector<ll>num(n);
+    for(auto &x:num)
+        cin>>x;
+    sort(num.begin(),num.end());
+    vector<ll>dp(n);
+    //for(auto &x:dp)
+        //x=maxn;
+    for(ll i=0;i<2*k-1;i++)
+        dp[i]=num[i]-num[0];        //当长度小于2*k时只能一次性消耗完所有的元素
+    ll cas=maxn;        //cas存储min(dp[j]-num[j+1])
+    //if(k==1) cout<<0<<endl;
+    //else
+    {
+        for(ll i=2*k-1;i<n;i++)
+        {
+            cas=min(cas,dp[i-k]-num[i-k+1]);
+            dp[i]=num[i]+cas;
+//            for(ll j=0;j<k&&i-k-j>=0;j++)
+//            {
+//                dp[i]=min(dp[i],dp[i-k-j]+num[i-1]-num[i-k-j]);
+//            }
+        }
+        cout<<dp[n-1]<<endl;
+    }
+}
+
+
+
+

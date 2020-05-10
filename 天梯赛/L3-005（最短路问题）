@@ -1,0 +1,107 @@
+#include<map>
+#include<set>
+#include<cmath>
+#include<queue>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<iostream>
+#include<algorithm>
+#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+
+int n,m,k,D;
+int dis[1020][1020];
+vector<pair<int,int>>dist[1020];
+int ans=0,mdis,sum;
+
+void Tbfs(int start)
+{
+    dis[start][start]=0;
+    deque<int>Q;
+    Q.pb(start);
+    while(Q.size())
+    {
+        for(int i=0;i<dist[Q[0]].size();i++)
+        {
+            if(dis[start][Q[0]]+dist[Q[0]][i].second<dis[start][dist[Q[0]][i].first])
+            {
+                Q.pb(dist[Q[0]][i].first);
+                dis[start][dist[Q[0]][i].first]=dist[Q[0]][i].second+dis[start][Q[0]];
+            }
+        }
+        Q.pop_front();
+    }
+}
+
+int main()
+{
+    memset(dis,0x7f,sizeof(dis));
+    scanf("%d%d%d%d",&n,&m,&k,&D);
+    char s1[5],s2[5];
+    int d;
+    for(int i=0;i<k;i++)
+    {
+        scanf("%s%s%d",s1,s2,&d);
+        int x=0,y=0;
+        for(int i=0;i<strlen(s1);i++)
+        {
+            if(s1[i]=='G') i++;
+            x*=10;
+            x+=s1[i]-'0';
+        }
+        if(s1[0]=='G') x+=1000;
+        for(int i=0;i<strlen(s2);i++)
+        {
+            if(s2[i]=='G') i++;
+            y*=10;
+            y+=s2[i]-'0';
+        }
+        if(s2[0]=='G') y+=1000;
+        dist[x].pb({y,d});
+        dist[y].pb({x,d});
+    }
+    for(int i=1;i<=m;i++)
+    {
+        int Min=INF,Tsum=0,Max=-INF;
+        Tbfs(1000+i);
+        for(int j=1;j<=n;j++)
+        {
+            Tsum+=dis[i+1000][j];
+            Max=max(Max,dis[i+1000][j]);
+            Min=min(Min,dis[i+1000][j]);
+        }
+        if(Max<=D&&(Min>mdis||Min==mdis&&Tsum<sum))
+        {
+            ans=i;
+            mdis=Min;
+            sum=Tsum;
+        }
+    }
+    if(ans) printf("G%d\n%.1lf %.1lf\n",ans,(double)mdis,(double)sum/n);
+    else printf("No Solution\n");
+}
+
+

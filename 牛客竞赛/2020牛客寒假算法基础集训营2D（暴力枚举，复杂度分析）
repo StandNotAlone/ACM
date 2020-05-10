@@ -1,0 +1,78 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//平面上有n个补充和的点，询问这n个点构成的三角形中有几个钝角三角形（n<=500)
+
+//分析复杂度，500^3是1e8级别，直接暴力完全可行.
+//就...直接暴力
+
+//判断三个点能否构成钝角三角形，先判断能否构成三角形，再判断是否是钝角三角形
+//将三条边长按照从小到大排为a,b,c，a+b>c即为能构成三角形的充要条件
+//a^2+b^2=c^2，代表这是个直角三角形，左侧大于右侧代表是锐角三角形，左侧小于右侧待表示钝角三角形
+
+//这里并不需要用到double，长度可以用平方来存储就可以避免小数，在最后比较长度的时候sqrt即可，可以避开精度问题
+
+struct node
+{
+    ll x,y;
+};
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    vector<node>N(n);
+    for(ll i=0;i<n;i++)
+    {
+        cin>>N[i].x>>N[i].y;
+    }
+    ll ans=0;
+    for(ll i=0;i<n;i++)
+        for(ll j=i+1;j<n;j++)
+            for(ll k=j+1;k<n;k++)
+            {
+                ll l1=abs(N[i].x-N[j].x)*abs(N[i].x-N[j].x)+abs(N[i].y-N[j].y)*abs(N[i].y-N[j].y);
+                ll l2=abs(N[i].x-N[k].x)*abs(N[i].x-N[k].x)+abs(N[i].y-N[k].y)*abs(N[i].y-N[k].y);
+                ll l3=abs(N[j].x-N[k].x)*abs(N[j].x-N[k].x)+abs(N[j].y-N[k].y)*abs(N[j].y-N[k].y);
+                if(l1>l2) swap(l1,l2);
+                if(l2>l3) swap(l2,l3);
+                if(l1>l2) swap(l1,l2);
+                if(sqrt(l1)+sqrt(l2)>sqrt(l3)&&l1+l2<l3) ans++;
+            }
+    cout<<ans<<endl;
+}
+
+
+
+

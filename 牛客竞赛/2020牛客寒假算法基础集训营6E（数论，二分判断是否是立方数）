@@ -1,0 +1,85 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=32000;
+
+bool flag[100010];
+vector<ll>num,pre;
+ll T,N;
+
+int main()
+{
+    memset(flag,0,sizeof(flag));
+    for(ll i=2;i<maxn;i++)
+    {
+        if(flag[i]==0)
+        {
+            num.pb(i*i*i);
+            pre.pb(i);
+            for(ll j=i*i;j<maxn;j+=i)
+                flag[j]=1;
+        }
+    }
+    ll len=num.size();
+    scanf("%lld",&T);
+    while(T--)
+    {
+        scanf("%lld",&N);
+        ll ans=1;
+        for(ll i=0;i<len&&num[i]<=N;i++)
+        {
+            if(N%num[i]==0)
+            {
+                while(N%num[i]==0)
+                {
+                    N/=num[i];
+                    ans*=pre[i];
+                }
+            }
+            while(N%pre[i]==0)
+                N/=pre[i];
+        }
+        ll l=1,r=1000000;
+        while(l<r)
+        {
+            ll mid=(l+r)>>1;
+            if(mid*mid*mid<N) l=mid+1;
+            else r=mid;
+        }
+        if(l*l*l==N) ans*=l;
+        printf("%lld\n",ans);
+    }
+}
+
+
+

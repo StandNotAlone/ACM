@@ -1,0 +1,78 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<cstdio>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//题意为定义了一个函数f(x)，f(x)的值为x的因子个数，比如f(6)=4,6的因子有1，2，3，6四个
+//给定一个n<=1e12，要求你求出多少次n=f(n)操作后使得n成为2
+
+//关键在于如何求取n的因子个数
+
+//n的所有因子种数可以看成，将n进行质因数分解，每个质因数取的个数的排列组合种数
+
+//例如72可以分解质因数成为2*2*2*3*3
+//也就是2的个数的取法共有0，1，2，3四种，3的个数取法共有0，1，2三种
+//那么72的因子个数即为4*3=12种
+//由于每一项都是质数，因此取法不同的两个数之间必然是不同的数，并且每一项都是72的因子
+
+ll ans=0;
+ 
+ll f(ll n)
+{
+    ll num=1,N=sqrt(n);
+    for(ll i=2;i<=N;i++)
+    {
+        if(n%i==0)
+        {
+            ll x=1;
+            while(n%i==0)
+            {
+                n/=i;
+                x++;
+            }
+            num*=x;
+        }
+    }
+    if(n>1) num*=2;
+    return num;
+}
+ 
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    while(n!=2)
+    {
+        ans++;
+        n=f(n);
+    }
+    cout<<ans<<endl;
+}

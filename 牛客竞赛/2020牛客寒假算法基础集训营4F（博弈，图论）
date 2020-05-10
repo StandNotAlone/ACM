@@ -1,0 +1,58 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const ll maxn=1e6+10;
+ 
+vector<ll>num[maxn];
+ll num1=0,num2=0;
+ 
+void dfs(ll now,bool cas)
+{
+    if(cas)num1++;
+    else num2++;
+    for(ll i=0;i<num[now].size();i++)
+        dfs(num[now][i],!cas);
+}
+ 
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    for(ll i=2;i<=n;i++)
+    {
+        ll x;
+        cin>>x;
+        num[x].pb(i);
+    }
+    dfs(1,0);
+    cout<<num1*(num1-1)+(num2-1)*num2<<endl;
+}

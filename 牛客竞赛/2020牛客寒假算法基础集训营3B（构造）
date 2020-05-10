@@ -1,0 +1,87 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+const ll mod=1e9+7;
+
+//都推出二进制分解构造了为什么当时一定要执着于从终点往前开始构造....
+//从起点开始构造不好么
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    //freopen("wzc.in","r",stdin);
+    //freopen("wzc.out","w",stdout);
+    ll k;
+    cin>>k;
+    k%=mod;
+    char field[50][50];
+    for(ll i=0;i<50;i++)
+       for(ll j=0;j<50;j++)
+           if(j>i) field[i][j]='R';
+       else    field[i][j]='D';
+    ll cas=0;
+    for(ll i=0;i<50;i++)
+        field[49][i]='R';
+    if(k)
+    {
+        cout<<50<<' '<<50<<endl;
+        while(k>1)
+        {
+            field[cas][cas]='B';
+            field[cas][cas+1]='D';
+            if(k&1) field[cas+1][cas]='B';
+            else field[cas+1][cas]='R';
+            k/=2;
+            cas++;
+        }
+        field[cas][cas]='D';
+        for(ll i=0;i<50;i++)
+        {
+            for(ll j=0;j<50;j++)
+                cout<<field[i][j];
+            cout<<endl;
+        }
+    }
+    else
+    {
+        cout<<49<<' '<<49<<endl;
+        for(ll i=0;i<49;i++)
+        {
+            for(ll j=0;j<49;j++)
+                cout<<'R';
+            cout<<endl;
+        }
+    }
+}
+
+
+

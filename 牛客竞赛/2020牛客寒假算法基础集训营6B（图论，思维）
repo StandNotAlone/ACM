@@ -1,0 +1,84 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=1e6+10;
+const int mod=1e9+7;
+ 
+int n,dir[maxn],cas,sum;
+int flag[maxn];
+int num[maxn];
+int f;
+ 
+void dfs(int now)
+{
+    cas++;
+    flag[now]=-1;
+    num[now]=cas;
+    if(flag[dir[now]]==0) dfs(dir[now]);
+    else if(flag[dir[now]]!=-1)
+    {
+        f=0;sum=flag[dir[now]]+1;
+    }
+    else
+    {
+        f=dir[now];
+        sum=cas-num[dir[now]]+1;
+    }
+    if(f&&now==f) f=0;
+    flag[now]=sum;
+    if(f==0) sum++;
+}
+ 
+int main()
+{
+    memset(flag,0,sizeof(flag));
+    memset(num,0,sizeof(num));
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++)
+    {
+        int x;
+        scanf("%d",&x);
+        dir[i]=x;
+    }
+    int ans=0;
+    for(int i=1;i<=n;i++)
+    {
+        if(flag[i]==0)
+        {
+            cas=0;
+            dfs(i);
+            ans=max(ans,flag[i]);
+        }
+    }
+    printf("%d\n",ans);
+}

@@ -1,0 +1,114 @@
+#include<map>
+#include<set>
+#include<cmath>
+#include<queue>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<iostream>
+#include<algorithm>
+#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define ft first
+#define sd second
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+#define rep(i,n) for(ll i=0;i<(ll)(n);i++)
+#define REP(i,n) for(ll i=1;i<=(ll)(n);i++)
+#define at(x,n) for(auto &x:n)
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1("/Users/wangzichao/Documents/wzc.in");
+//ofstream f2("/Users/wangzichao/Documents/wzc.out");
+//ios::sync_with_stdio(false);
+//cin.tie(0);cout.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const ll maxn=1e5;
+const double eps=1e-10;
+const ll mod=1e9+7;
+
+
+ll a0,a1,b0,b1;
+//素数线性筛法
+vector<ll>prime;
+ll v[maxn];//保存下标值的最小质因子用于线性筛的实现
+
+void primes(ll n)
+{
+    for(ll i=2;i<=n;i++)
+    {
+        if(!v[i])//v[i]为0代表0为质数
+        {
+            v[i]=i;
+            prime.pb(i);
+        }
+        for(ll j=0;j<prime.size();j++)
+        {
+            if(prime[j]>v[i]||prime[j]*i>n) break;//如果当前找寻的质数大于i的最小质因数或者相乘后超出n的范围则停止
+            v[prime[j]*i]=prime[j];
+        }
+    }
+}
+
+void cal(ll &a,ll x,ll &num)
+{
+    while(!(a%x))
+    {
+        num++;
+        a/=x;
+    }
+}
+
+void solve(ll x,ll &ans)
+{
+    ll A0=0,A1=0,B0=0,B1=0;
+    cal(a0,x,A0);
+    cal(a1,x,A1);
+    cal(b0,x,B0);
+    cal(b1,x,B1);
+    if(A0>A1&&B0<B1&&A1==B1);
+    else if(A0>A1&&B0==B1&&B1>=A1);
+    else if(A0==A1&&B0<B1&&A1<=B1);
+    else if(A0==A1&&B0==B1) ans*=B1-A1+1;
+    else ans=0;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);cout.tie(0);
+    ll n;
+    cin>>n;
+    primes(sqrt(2e9));
+    while(n--)
+    {
+        cin>>a0>>a1>>b0>>b1;
+        if(b1%a1)
+        {
+            cout<<0<<endl;
+            continue;
+        }
+        ll ans=1;
+        at(x,prime)
+        {
+            if(!(b1%x)) solve(x,ans);
+        }
+        if(b1>1) solve(b1,ans);
+        cout<<ans<<endl;
+    }
+}
+
+

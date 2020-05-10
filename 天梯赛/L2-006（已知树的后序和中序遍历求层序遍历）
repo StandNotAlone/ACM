@@ -1,0 +1,93 @@
+#include<map>
+#include<set>
+#include<cmath>
+#include<queue>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<iostream>
+#include<algorithm>
+#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+#ifdef local
+#endif
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//cout<<fixed<<setprecision(6)<<;
+//ios::sync_with_stdio(false);cin.tie(0);
+using namespace std;
+const int maxn=40;
+
+struct Node
+{
+    ll father,sunleft,sunright;
+}node[100000];
+
+ll n,flagmid[maxn],last[maxn];
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cin>>n;
+    for(ll i=1;i<=n;i++) cin>>last[i];
+    for(ll i=1;i<=n;i++) 
+    {
+        ll x;
+        cin>>x;
+        flagmid[x]=i;
+    }
+    for(ll i=n-1;i>0;i--)
+    {
+        node[0];
+        ll now=last[n];
+        bool f=1;
+        while(f)
+        {
+            if(flagmid[last[i]]>flagmid[now])
+            {
+                if(node[now].sunright) now=node[now].sunright;
+                else 
+                {
+                    node[now].sunright=last[i];
+                    f=0;
+                }
+            }
+            else 
+            {
+                if(node[now].sunleft) now=node[now].sunleft;
+                else
+                {
+                    node[now].sunleft=last[i];
+                    f=0;
+                }
+            }
+        }
+    }
+    deque<ll>Q;
+    Q.pb(last[n]);
+    bool f=1;
+    while(Q.size())
+    {
+        if(node[Q[0]].sunleft) Q.pb(node[Q[0]].sunleft);
+        if(node[Q[0]].sunright) Q.pb(node[Q[0]].sunright);
+        if(f) f=0;
+        else cout<<' ';
+        cout<<Q[0];
+        Q.pop_front();
+    }
+}
+

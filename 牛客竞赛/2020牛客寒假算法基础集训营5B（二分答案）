@@ -1,0 +1,80 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=1e5+10;
+ 
+ll n;
+ll loca[maxn][2];
+ 
+bool check(double x)
+{
+    double l=-10000,r=10000;
+    bool flag=1;
+    for(ll i=0;i<n;i++)
+    {
+        if(loca[i][1]>x)
+        {
+            flag=0;
+            break;
+        }
+        double T=sqrt(x*x-loca[i][1]*loca[i][1]);
+        double L=loca[i][0]-T,R=loca[i][0]+T;
+        if(l<L) l=L;
+        if(r>R) r=R;
+        if(l>r)
+        {
+            flag=0;
+            break;
+        }
+    }
+    return flag;
+}
+ 
+int main()
+{
+    //ios::sync_with_stdio(false);
+    //cin.tie(0);
+    cin>>n;
+    for(ll i=0;i<n;i++)
+    {
+        cin>>loca[i][0]>>loca[i][1];
+        if(loca[i][1]<0) loca[i][1]=-loca[i][1];
+    }
+    double l=0,r=15000;
+    while(r-l>=0.0001)
+    {
+        double mid=(l+r)/2;
+        if(check(mid)) r=mid;
+        else l=mid;
+    }
+    printf("%.4lf\n",l);
+}

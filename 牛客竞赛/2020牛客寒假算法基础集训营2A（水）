@@ -1,0 +1,47 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+
+//两个人进行石头剪刀布，给定第一个人的石头剪刀布的次数为a,b,c,第二个的人次数为x,y,z
+//a+b+c=x+y+z
+//现在询问第一个人最多可以赢多少局
+//直接贪心，对于a次石头，看一下第二个人出剪刀的次数y，min(a,y)即为第一个人出石头时候最多赢的次数
+//同理在算min(b,z)和min(c,x)，加起来即为最多赢得次数，其他的情况随便怎么排都只能是平局或者输
+
+const int maxn=INF;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll a,b,c,x,y,z;
+    cin>>a>>b>>c>>x>>y>>z;
+    cout<<min(a,y)+min(b,z)+min(c,x)<<endl;
+}
+

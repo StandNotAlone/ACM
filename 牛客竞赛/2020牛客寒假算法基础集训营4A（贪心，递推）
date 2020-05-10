@@ -1,0 +1,57 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll num[90][2];
+    num[0][0]=1;
+    num[0][1]=0;
+    num[1][0]=2;
+    num[1][1]=1;
+    for(ll i=2;i<=80;i++)
+    {
+        num[i][1]=num[i-1][0];
+        num[i][0]=num[i-1][0]+num[i-1][1];
+    }
+    //num[0][0];
+    ll t,n;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n;
+        cout<<num[n][0]+num[n][1]<<endl;
+    }
+}
+
+
+

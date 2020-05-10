@@ -1,0 +1,76 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=1e5+10;
+const double mi=1e-8;
+ 
+double a,b;
+ 
+bool check(double x)
+{
+    double T=pow(x,1.0/3);
+    return fabs(b-T)+1<fabs(x-b);
+}
+ 
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll T;
+    cin>>T;
+    for(ll i=0;i<T;i++)
+    {
+        cin>>a>>b;
+        double ans=0;
+        if(a*b<0)
+        {
+            ans=fabs(b);
+            b=0;
+        }
+        if(a<0) a=-a;
+        if(b<0) b=-b;
+        while(1)
+        {
+            if(check(a))
+            {
+                ans+=1;
+                a=pow(a,1.0/3);
+            }
+            else
+            {
+                ans+=fabs(a-b);
+                break;
+            }
+        }
+        printf("%.6lf\n",ans);
+    }
+}

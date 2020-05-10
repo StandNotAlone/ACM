@@ -1,0 +1,83 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<cstdio>
+#include<fstream>
+#include<iomanip>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//题意为在一个二维平面上，你站在(x0,y0）的位置，有n个靶子（xi，yi）abs(xi)<=2e9，abs(yi)<=2e9
+//要求你在坐标轴上选择x轴或者y轴放置一块板子，使得放置后你射箭可以射中的靶子不超过k个（0<=k<=n-2）也就是至少要挡住两个靶子
+//题面少了一个条件，起始位置是不会和坐标轴重叠的
+
+//对于在y轴上设置挡板，能挡住的靶子的横坐标必然是0或者与起点位置横坐标正负相反，记录满足条件的靶子和起始位置的连线与y轴的交点纵坐标即可，记录后sort一下
+//查找时，我们需要剩下最多k个靶子，也就是要挡住至少n-k个靶子，对记录的下标差距为n-k-1的两个靶子相减坐标即为挡板长度
+//x轴情况类似
+
+int main()
+{
+    //ios::sync_with_stdio(false);
+    //cin.tie(0);
+    pair<double,double>start;
+    int n,k;
+    cin>>start.first>>start.second>>n>>k;
+    vector<pair<double,double>>node(n);
+    vector<double>x,y;
+    for(auto i:node)
+    {
+        cin>>i.first>>i.second;
+        if(i.first*start.first<=0)
+        {
+            y.pb(i.second+(start.second-i.second)*(abs(i.first)/(abs(i.first)+abs(start.first))));
+        }
+        if(i.second*start.second<=0)
+        {
+            x.pb(i.first+(start.first-i.first)*(abs(i.second)/(abs(i.second)+abs(start.second))));
+        }
+    }
+    if(x.size()) sort(x.begin(),x.end());
+    if(y.size()) sort(y.begin(),y.end());
+    double ans=5e9;
+    k=n-k;
+    if(x.size()>=k)
+    {
+        for(int i=0;i+k-1<x.size();i++)
+            if((x[i+k-1]-x[i])<ans)
+                ans=x[i+k-1]-x[i];
+    }
+    if(y.size()>=k)
+    {
+        for(int i=0;i+k-1<y.size();i++)
+            if((y[i+k-1]-y[i])<ans)
+                ans=y[i+k-1]-y[i];
+    }
+    if(ans==5e9) cout<<-1<<endl;
+    else cout<<setprecision(6)<<fixed<<ans<<endl;
+}
+
+
+

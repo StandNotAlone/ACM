@@ -1,0 +1,69 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//题意为要求出满足i*j<=n的三元组的个数
+//三元组(i,j,k)需要满足sqrt（i)+sqrt(j)=sqrt(k)，i，j，k均为整数
+
+//事实上可以发现当i和j提取根号下的二次方项到前面系数，根号下剩下的部分只要相等，就可以使得k也是整数
+//比如sqrt(18)=3sqrt(2) sqrt(32)=4sqrt(2)
+//因此sqrt(18)+sqrt(32)=7sqrt(2)=sqrt(98) 98是整数
+//而如果是sqrt(18)+sqrt(7)=3sqrt(2)+sqrt(7)=sqrt(25+6sqrt(14)) 括号内不是整数
+
+//因此我们假定i<j,在计算次数的时候只要*2即可，即包含了i和j交换位置的情况
+//这样我们只需要循环i从1到sqrt（n)，再对i除去所有的二次方项质因子，剩下的部分即根号下剩下的部分I
+//再寻找满足i*j<=n的j，(这里的j和代码部分的j不一样，代码部分中的n/i才是这里的j），且j根号下剩余部分与i相同，因此j除以剩下部分I也是个平方数，直接用j除以剩下部分再开平方即为种数
+//注意我们找的是i<j，避免重复需要将j<i的部分减去后再*2，也就是减去sqrt（i/I)，*2后再加上i=j的情况1种
+
+//复杂度大概1e6
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    ll ans=0;
+    for(ll i=1;i<=sqrt(n);i++)
+    {
+        ll I=i;
+        for(ll j=2;j<=sqrt(i);j++)
+        {
+            while(I%(j*j)==0)
+                I=I/j/j;
+        }
+        ans+=2*((ll)sqrt(n/i/I)-(ll)sqrt(i/I))+1;
+        //cout<<ans<<endl;
+    }
+    cout<<ans<<endl;
+}
+
+

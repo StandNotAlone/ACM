@@ -1,0 +1,69 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<cstdio>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int M=1000000007;
+
+//题意为在一个n*m的矩形格点阵中，计算有几个好三角形
+//好三角形定义为1.三个顶点坐标均为整数，2.面积为1，3.至少有一条边和x轴或y轴平行
+
+//方便说明起见，将与x轴或y轴平行的边简称平行边
+
+//由于顶点坐标均为整数，因此平行边的长度也只能是整数，而且平行边对应的高也只能是整数
+//面积为1，则平行边长度和对应的高只能是2和1或者1和2
+//满足条件的三角形可能只有一条长度为1的平行边，也可能只有一条长度为2的平行边，也可能既有一条长度1的平行边又有一条长度为2的平行边
+//可以通过计算至少有一条长度为1的高为2平行边的三角形个数，加上计算至少有一条长度为2的平行边的高为1的三角形个数
+//减去两者重复的部分，既有一条长度1的平行边又有一条长度为2的平行边的三角形个数即为答案
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n,m;
+    cin>>n>>m;
+    ll ans,ans1,ans2,ans12;
+    ans2=((m-2)*m%M*2%M*(n-1)%M+(n-2)*n%M*2%M*(m-1)%M)%M;
+    //至少有一条长度为2的平行边高为1的三角形个数
+    //加号左侧部分为该平行边平行x轴的情况，m个点构成的线段长度为m-1，可截取的长度为2的线段个数为m-2
+    //当该平行边在上下界时，第三个点只能往下方或上方一行取，对应情况为m个（每行的点的个数）
+    //当该平行边不在上下界时，第三个点可往上方也可往下方一行取，对应情况为2m个
+    //综合后总情况数即为(m-2)*(n-1)*2*m
+    //加法右侧为平行边平行y轴的情况，同上
+    ans1=((m-1)*m%M*2%M*(n-2)%M+(n-1)*n%M*2%M*(m-2)%M)%M;
+    //类似ans2
+    ans12=((m-2)*(n-1)%M+(n-2)*(m-1)%M)%M*4%M;
+    //既有长度1的平行边又有长度2的平行边，即这是个直角三角形
+    //直接在整个矩阵中寻找长宽为2*1的矩阵（3*2个点），每个矩阵中有四个满足条件的三角形
+    ans=((ans1+ans2)%M-ans12+M)%M;
+    cout<<ans<<endl;
+}
+
+
+
+
+

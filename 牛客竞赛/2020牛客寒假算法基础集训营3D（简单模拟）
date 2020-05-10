@@ -1,0 +1,78 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+bool cmp(pair<ll,ll>a,pair<ll,ll>b)
+{
+    return a.second<b.second;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    vector<ll>num;
+    vector<pair<ll,ll>>loca;
+    num.pb(-1);
+    for(ll i=1;i<=n;i++)
+    {
+        ll x;
+        cin>>x;
+        if(x!=-1)
+        {
+            pair<ll,ll>ne;
+            ne.first=i;
+            ne.second=x;
+            loca.pb(ne);
+        }
+        num.pb(x);
+    }
+    sort(loca.begin(),loca.end(),cmp);
+    cout<<"The size of the tree is "<<loca.size()<<endl;
+    cout<<"Node "<<num[1]<<" is the root node of the tree"<<endl;
+    for(ll i=0;i<loca.size();i++)
+    {
+        cout<<"The father of node "<<loca[i].second<<" is "<<num[loca[i].first/2];
+        cout<<", the left child is ";
+        if(loca[i].first*2>n) cout<<-1;
+        else cout<<num[loca[i].first*2];
+        cout<<", and the right child is ";
+        if(loca[i].first*2+1>n) cout<<-1;
+        else cout<<num[loca[i].first*2+1];
+        cout<<endl;
+    }
+}
+
+
+
+

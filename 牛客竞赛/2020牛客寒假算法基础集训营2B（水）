@@ -1,0 +1,55 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//一个纯数字的字符串，可以被任意打乱顺序，最多可以有几个下标不同的子串“616”
+
+//既然可以随意打乱顺序，而且我们只要6和1两个数字就可以了，记录下整个字符串中6和1出现的次数
+//我们要构成616，那么至少需要两个6和一个1，之后每有一对1和6即可多一个子串616（接在前面已构成的串后面，末尾是6恰好可构成一个616）
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    vector<char>s(n);
+    ll num1=0,num6=0;
+    for(auto x:s)
+    {
+        cin>>x;
+        if(x=='1') num1++;
+        if(x=='6') num6++;
+    }
+    if(num6>1&&num1) cout<<min(num6-1,num1)<<endl;
+    else cout<<0<<endl;
+}
+

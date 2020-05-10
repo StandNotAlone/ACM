@@ -1,0 +1,83 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//题意为A和B两个人，从A开始两个人交替从n件物品中每次取走一个
+//第i件物品有两个值，A[i]代表该物品被A取走A可以得到的分数，B[i]代表被B取走B可以得到的分数
+//两个人都希望自己最后的得分尽可能大
+//分两行输出A和B各自取的物品下标，任意顺序均可
+
+//两个人都希望自己的分数尽可能大，那么对于第i件物品来说它有两个属性A[i]和B[i]
+//对于A来说，它取这件物品可以得到A[i]分，而B的话就得不到B[i]分，所以实际上取这件物品对最后的结果差值的收益是一样的，也就是A[i]+B[i]
+//对于B来说也是同样的
+//因此对于每一件物品，我们将其的两个价值直接加起来，按照这个加起来的价值进行排序即为这些物品取的优先顺序
+//A先取因此奇数下标的物品都是A取的，偶数下标的物品都是B取的（多写cf，这道题就会写的特别快）
+
+bool cmp(pair<ll,ll>x,pair<ll,ll>y)
+{
+    return x.first>y.first;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    vector<pair<ll,ll>>num(n);
+    for(ll i=0;i<n;i++)
+    {
+        cin>>num[i].first;
+        num[i].second=i+1;
+    }
+    for(ll i=0;i<n;i++)
+    {
+        ll x;
+        cin>>x;
+        num[i].first+=x;
+    }
+    sort(num.begin(),num.end(),cmp);
+    for(ll i=0;i<n;i+=2)
+    {
+        if(i) cout<<' ';
+        cout<<num[i].second;
+    }
+    cout<<endl;
+    for(ll i=1;i<n;i+=2)
+    {
+        if(i>1) cout<<' ';
+        cout<<num[i].second;
+    }
+    cout<<endl;
+}
+
+
+

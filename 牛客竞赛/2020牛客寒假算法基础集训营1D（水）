@@ -1,0 +1,54 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<cstdio>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//n碗饭，第i碗饭有i粒米饭，一个人拿走了其中一碗
+//给你剩下n-1碗饭中的米饭数量，问拿走的那一碗中有几粒米饭
+
+//总共的米饭数是(1+n)*n/2，直接累加剩下的米饭总数，两个相减就是答案
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    vector<ll>a(n-1);
+    ll sum=0;
+    for(auto  x:a)
+    {
+        cin>>x;
+        sum+=x;
+    }
+    cout<<(n+1)*n/2-sum<<endl;
+}
+
+
+

@@ -1,0 +1,138 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=1e5+1;
+const ll mod=1e9+7;
+char A[maxn];
+
+struct SegmentTree
+{
+    ll l,r;
+    ll suml,sumr,cas,ans;
+}ST[4*maxn];
+
+void buildST(ll l,ll r,ll loca)
+{
+    //cout<<l<<' '<<r<<' '<<loca<<endl;
+    ST[loca].l=l;
+    ST[loca].r=r;
+    if(l==r)
+    {
+        if(A[l]=='1') ST[loca].cas=1;
+        else ST[loca].cas=0;
+        ST[loca].suml=ST[loca].cas;
+        ST[loca].sumr=ST[loca].cas;
+        ST[loca].ans=0;
+        return;
+    }
+    ll mid=l+((r-l)>>1);
+    buildST(l,mid,2*loca);
+    buildST(mid+1,r,2*loca+1);
+    ST[loca].cas=(ST[loca*2].cas+ST[loca*2+1].cas)%mod;
+    ST[loca].suml=((ST[loca*2].suml+ST[loca*2+1].suml)%mod+ST[loca*2+1].cas*(mid-l+1)%mod)%mod;
+    ST[loca].sumr=((ST[loca*2+1].sumr+ST[loca*2].sumr)%mod+ST[loca*2].cas*(r-mid)%mod)%mod;
+    ST[loca].ans=(((ST[loca*2].ans+ST[loca*2+1].ans)%mod+ST[loca*2].sumr*ST[loca*2+1].cas%mod)%mod+(ST[loca*2+1].suml*ST[loca*2].cas%mod-ST[loca*2].cas*ST[loca*2+1].cas%mod+mod)%mod)%mod;
+}
+
+void changeST(ll x,ll y,ll loca)
+{
+    if(ST[loca].l==ST[loca].r)
+    {
+        ST[loca].cas=y%2;
+        ST[loca].suml=y%2;
+        ST[loca].sumr=y%2;
+        return;
+    }
+    ll mid=ST[loca].l+((ST[loca].r-ST[loca].l)>>1);
+    if(mid>=x) changeST(x,y,loca*2);
+    else changeST(x,y,loca*2+1);
+    ST[loca].cas=(ST[loca*2].cas+ST[loca*2+1].cas)%mod;
+    ST[loca].suml=((ST[loca*2].suml+ST[loca*2+1].suml)%mod+ST[loca*2+1].cas*(mid-ST[loca*2].l+1)%mod)%mod;
+    ST[loca].sumr=((ST[loca*2+1].sumr+ST[loca*2].sumr)%mod+ST[loca*2].cas*(ST[loca*2+1].r-mid)%mod)%mod;
+    ST[loca].ans=(((ST[loca*2].ans+ST[loca*2+1].ans)%mod+ST[loca*2].sumr*ST[loca*2+1].cas%mod)%mod+(ST[loca*2+1].suml*ST[loca*2].cas%mod-ST[loca*2].cas*ST[loca*2+1].cas%mod+mod)%mod)%mod;
+}
+
+//SegmentTree askST(ll l,ll r,ll loca)
+//{
+//    if(l==ST[loca].l&&r==ST[loca].r) return ST[loca];
+//    ll mid=ST[loca].l+((ST[loca].r-ST[loca].l)>>1);
+//    SegmentTree val,val1,val2;
+//    val.ans=0;
+//    val.sumr=0;
+//    val.suml=0;
+//    bool flag1=0,flag2=0;
+//    if(l<=mid)
+//    {
+//        flag1=1;
+//        val1=askST(l,r,loca*2);
+//    }
+//    if(r>mid)
+//    {
+//        flag2=1;
+//        val2=askST(l,r,loca*2+1);
+//    }
+//    if(flag1&&flag2)
+//    {
+//        val.l=val1.l;
+//        val.r=val2.r;
+//        val.suml=val1.suml+val2.suml+val2.cas*(mid-val.l+1);
+//        val.sumr=val1.sumr+val2.sumr+val1.cas*(val.r-mid);
+//        val.ans=val1.ans+val2.ans+val1.sumr*val2.cas+val2.suml*val1.cas-val1.cas*val2.cas;
+//        return val;
+//    }
+//    else if(flag1) return val1;
+//    else if(flag2) return val2;
+//    return val;
+//}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    cin.get();
+    cin.getline(A,maxn);
+    buildST(0,n-1,1);
+    ll m;
+    cin>>m;
+    cout<<ST[1].ans<<endl;
+    for(ll i=0;i<m;i++)
+    {
+        ll y,x;
+        cin>>y>>x;
+        changeST(x-1,y,1);
+        cout<<ST[1].ans<<endl;
+    }
+}
+
+
+
+

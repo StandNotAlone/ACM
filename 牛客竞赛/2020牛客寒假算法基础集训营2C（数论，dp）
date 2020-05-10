@@ -1,0 +1,70 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//这道题如果抛开这个概率取模的定义的话，就是个很普通的dp题
+//dp[i][j]存储前j道题目做对i道的概率，num[i]存储第i道题做对的概率
+//状态转移方程为dp[i][j]=(dp[i-1][j-1]*num[i]+dp[i][j-1]*(1-num[i]);
+//加号左侧部分为做对的第i道题是第j道题，右侧部分是做对的第i道题不是第j道题
+
+//之后就是这个概率取模定义的问题了
+//其实在稿纸上自己推一下就行了...取模定义后的概率，进行乘法运算完全可以直接当原本的概率来看
+//是同余的，发生的概率为p，而不发生的概率就位(1-p+mod)%mod,这个1的由来其实是1=b/b，上下除以b，分子部分剩下的那个1
+
+const ll mod=1e9+7;
+
+ll num[2010],dp[2010][2010];
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll n;
+    cin>>n;
+    for(ll i=1;i<=n;i++)
+        cin>>num[i];
+    dp[0][0]=1;
+    for(ll i=1;i<=n;i++)
+        dp[0][i]=dp[0][i-1]*(1-num[i]+mod)%mod;
+    for(ll i=1;i<=n;i++)
+    {
+        dp[i][i]=dp[i-1][i-1]*num[i]%mod;
+        for(ll j=i+1;j<=n;j++)
+            dp[i][j]=(dp[i-1][j-1]*num[j]%mod+dp[i][j-1]*((1-num[j]+mod)%mod)%mod)%mod;
+    }
+    for(ll i=0;i<=n;i++)
+    {
+        if(i) cout<<' ';
+        cout<<dp[i][n];
+    }
+    cout<<endl;
+}
+

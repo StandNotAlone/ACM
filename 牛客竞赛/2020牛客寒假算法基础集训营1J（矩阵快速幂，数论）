@@ -1,0 +1,121 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<cstdio>
+#include<fstream>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//此题比赛时想到了用矩阵快速幂来完成，但是不知道费马小定理无法实现
+//并且此题要特判x,y,a是否存在%1e9+7后是0的情况
+
+//费马小定理：如果m是一个质数，而a不是m的倍数，则a^(m-1)%m=1     如果a是m的倍数很明显是0
+//由这个定理我们把a^p%m转化成a^(p%(m-1)%m
+
+const ll mod=1e9+7;
+
+struct Matrix
+{
+    ll m[3][3];
+};
+
+ll n,x,y,a,b;
+
+Matrix Matrix_mul(Matrix a,Matrix b)
+{
+    Matrix c;
+    memset(c.m,0,sizeof(c.m));
+    for(int i=0;i<3;i++)
+        for(int j=0;j<3;j++)
+            for(int k=0;k<3;k++)
+            {
+                c.m[i][j]+=(a.m[i][k]*b.m[k][j])%(mod-1);
+                c.m[i][j]%=(mod-1);
+            }
+    return c;
+};
+
+ll POW(ll a,ll b)
+{
+    ll t=1;
+    while(b)
+    {
+        if(b&1) t=(t*a)%mod;
+        a=(a*a)%mod;
+        b>>=1;
+    }
+    return t;
+};
+
+Matrix Matrix_pow(Matrix t,ll b)
+{
+    Matrix c=
+    {
+        1,0,0,
+        0,1,0,
+        0,0,1
+    };
+    while(b)
+    {
+        if(b&1) c=Matrix_mul(c,t);
+        t=Matrix_mul(t,t);
+        b>>=1;
+    }
+    return c;
+};
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cin>>n>>x>>y>>a>>b;
+    if(n==1) cout<<x%mod<<endl;
+    else if(n==2) cout<<y%mod<<endl;
+    else
+    {
+        b%=(mod-1);
+        Matrix t=
+        {
+            1,1,b,
+            1,0,0,
+            0,0,1
+        };
+        x%=mod;
+        y%=mod;
+        a%=mod;
+        if(x==0||y==0||a==0) cout<<0<<endl;//注意这里特判，0的任意次幂都是0，而POW中如果次方是0会得到1
+        else
+        {
+            t=Matrix_pow(t,n-2);
+            ll Y=t.m[0][0],X=t.m[0][1],A=t.m[0][2];
+            x=POW(x,X);
+            y=POW(y,Y);
+            a=POW(a,A);
+            cout<<((x*y)%mod*a)%mod<<endl;
+        }
+    }
+    //cout<<1728*72*2<<endl;
+}

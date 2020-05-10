@@ -1,0 +1,75 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+//T（<=1000)组数据，每组数据包括a,b,c,d,e,f,g七个数据（-1e9<=a,b,c,g<=1e9)(0<=d,e,f<=1e9)
+//要求判断a^d+b^e+c^f=g是否成立
+
+//这道题目最后的数据非常非常非常非常非常庞大，即使用高精度也无法实现存储（会爆内存）
+//注意到等式右边的g最大值为1e9，我们可以对等式左边的三项都进行取模操作，模数取大于1e9的质数（质数最佳）
+//这种题不可能存在超强测试数据，实际题目给的测试数据也是偏弱的，如果一个质数的模数无法得到争取答案，可以多取几个质数
+//常用的1e9+7和1e9+9两个质数其实就已经足够了
+
+//这道题用pow都可以直接过不需要快速幂优化，甚至出乎出题人的意料
+
+const ll mod=1e9+7;
+
+ll qpow(ll a,ll b)
+{
+    ll t=1;
+    while(b)
+    {
+        if(b&1) t=(t*a)%mod;
+        a=(a*a)%mod;
+        b>>=1;
+    }
+    return t;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll  t,a,b,c,d,e,f,g;
+    cin>>t;
+    while(t--)
+    {
+        cin>>a>>b>>c>>d>>e>>f>>g;
+        ll num1=qpow(a,d),num2=qpow(b,e),num3=qpow(c,f);
+        if(num1+num2+num3==g) cout<<"Yes"<<endl;
+        else cout<<"No"<<endl;
+    }
+    
+}
+
+
+
+

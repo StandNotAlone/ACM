@@ -1,0 +1,9 @@
+vector<ll>origin;
+
+sort(origin.begin(),origin.end());
+origin.erase(unique(origin.begin(),origin.end()),origin.end());//去重
+
+ll find(ll x)
+{
+    return lower_bound(origin.begin(),origin.end(),x)-origin.begin();
+}

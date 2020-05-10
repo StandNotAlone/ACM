@@ -1,0 +1,93 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+ll gcd(ll a,ll b)
+{
+    if(b) return gcd(b,a%b);
+    else return a;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int n;
+    cin>>n;
+    ll a1,b1,a2,b2;
+    char c;
+    cin>>a1>>c>>b1;
+    ll t;
+    if(abs(a1)>b1) t=gcd(abs(a1),b1);
+    else t=gcd(b1,abs(a1));
+    a1/=t;
+    b1/=t;
+    for(int i=1;i<n;i++)
+    {
+        cin>>a2>>c>>b2;
+        if(abs(a2)>b2) t=gcd(abs(a2),b2);
+        else t=gcd(b2,abs(a2));
+        a2/=t;
+        b2/=t;
+        if(b1>b2) t=b1*b2/gcd(b1,b2);
+        else t=b1*b2/gcd(b2,b1);
+        a1=a1*(t/b1)+a2*(t/b2);
+        b1=t;
+        if(abs(a1)>b1) t=gcd(abs(a1),b1);
+        else t=gcd(b1,abs(a1));
+        a1/=t;
+        b1/=t;
+    }
+    if(a1<0)
+    {
+        cout<<'-';
+        a1=-a1;
+    }
+    bool f=0;
+    if(a1>=b1)
+    {
+        cout<<a1/b1;
+        a1%=b1;
+        f=1;
+    }
+    if(a1)
+    {
+        if(f) cout<<' ';
+        cout<<a1<<'/'<<b1<<endl;
+    }
+    else if(f==0) cout<<0<<endl;
+}
+
+
+

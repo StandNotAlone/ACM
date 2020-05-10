@@ -1,0 +1,60 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+const ll mod=1e9+7;
+ll n,m,h;
+ll c[2010],r[2010],field[2010][2010];
+ 
+int main()
+{
+    memset(c,0,sizeof(c));
+    memset(r,0,sizeof(r));
+    memset(field,0,sizeof(field));
+    scanf("%lld%lld%lld",&n,&m,&h);
+    while(h--)
+    {
+        ll xi,yi,zi;
+        scanf("%lld%lld%lld",&xi,&yi,&zi);
+        r[xi]+=zi;
+        c[yi]+=zi;
+        field[xi][yi]+=zi;
+    }
+    ll ans=0;
+    for(ll i=1;i<=n;i++)
+        for(ll j=1;j<=m;j++)
+        {
+            ans=(ans+((r[i]+c[j]-field[i][j])%mod*(i+j)%mod))%mod;
+        }
+    printf("%lld\n",ans);
+}

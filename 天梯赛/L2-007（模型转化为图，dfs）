@@ -1,0 +1,129 @@
+#include<map>
+#include<set>
+#include<cmath>
+#include<queue>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<iostream>
+#include<algorithm>
+#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+
+const ll maxn=1e4+7;
+
+struct Node
+{
+    ll num,sum[2],mi;
+    double ave[2];
+};
+
+vector<ll>road[maxn],man;
+bool flag[maxn];
+ll field[maxn][2];
+vector<Node>node;
+Node N;
+
+bool cmp(Node a,Node b)
+{
+    return a.ave[1]>b.ave[1]||a.ave[1]==b.ave[1]&&a.mi<b.mi;
+}
+
+void dfs(ll now)
+{
+    for(auto x:road[now])
+    {
+        if(flag[x])
+        {
+            N.num++;
+            N.sum[0]+=field[x][0];
+            N.sum[1]+=field[x][1];
+            N.mi=min(N.mi,x);
+            flag[x]=0;
+            dfs(x);
+        }
+    }
+}
+
+void test(ll a,ll b)
+{
+    if(b!=-1)
+    {
+        road[a].pb(b);
+        road[b].pb(a);
+        flag[b]=1;
+        man.pb(b);
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout<<fixed<<setprecision(3);
+    ll t;
+    cin>>t;
+    while(t--)
+    {
+        ll k,a,b,c,x;
+        cin>>a>>b>>c>>k;
+        flag[a]=1;
+        man.pb(a);
+        test(a,b);
+        test(a,c);
+        for(ll i=0;i<k;i++)
+        {
+            cin>>x;
+            test(a,x);
+        }
+        cin>>field[a][0]>>field[a][1];
+    }
+    for(auto x:man)
+    {
+        if(flag[x]) 
+        {
+            N.num=1;
+            N.sum[0]=field[x][0];
+            N.sum[1]=field[x][1];
+            N.mi=x;
+            flag[x]=0;
+            dfs(x);
+            N.ave[0]=(double)N.sum[0]/N.num;
+            N.ave[1]=(double)N.sum[1]/N.num;
+            node.pb(N);
+        }
+    }
+    sort(node.begin(),node.end(),cmp);
+    cout<<node.size()<<endl;
+    for(auto x:node)
+    {
+        if(x.mi/1000==0) cout<<0;
+        if(x.mi/100==0) cout<<0;
+        if(x.mi/10==0) cout<<0;
+        cout<<x.mi<<' '<<x.num<<' '<<x.ave[0]<<' '<<x.ave[1]<<endl;
+    }
+}
+    
+

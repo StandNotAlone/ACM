@@ -1,0 +1,46 @@
+ll A[maxn];
+
+struct SegmentTree
+{
+    ll l,r;
+    ll max;
+}ST[4*maxn];
+
+void buildST(ll l,ll r,ll loca)
+{
+    //cout<<l<<' '<<r<<' '<<loca<<endl;
+    ST[loca].l=l;
+    ST[loca].r=r;
+    if(l==r)
+    {
+        ST[loca].max=A[l];
+        return;
+    }
+    ll mid=l+((r-l)>>1);
+    buildST(l,mid,loca<<1);
+    buildST(mid+1,r,(loca<<1)+1);
+    ST[loca].max=max(ST[loca<<1].max,ST[(loca<<1)+1].max);
+}
+
+void changeST(ll x,ll loca)
+{
+    if(ST[loca].l==ST[loca].r)
+    {
+        ST[loca].max=A[x];
+        return;
+    }
+    ll mid=ST[loca].l+((ST[loca].r-ST[loca].l)>>1);
+    if(mid>=x) changeST(x,loca<<1);
+    else changeST(x,(loca<<1)+1);
+    ST[loca].max=max(ST[loca<<1].max,ST[(loca<<1)+1].max);
+}
+
+ll askST(ll l,ll r,ll loca)
+{
+    if(l<=ST[loca].l&&r>=ST[loca].r) return ST[loca].max;
+    ll mid=ST[loca].l+((ST[loca].r-ST[loca].l)>>1);
+    ll val=-INF;
+    if(l<=mid) val=max(val,askST(l,r,loca*2));
+    if(r>mid) val=max(val,askST(l,r,loca*2+1));
+    return val;
+}

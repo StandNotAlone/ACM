@@ -1,0 +1,156 @@
+#include<map>
+#include<set>
+#include<cmath>
+#include<queue>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<iostream>
+#include<algorithm>
+#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+
+struct Node
+{
+    ll x,y;
+}node;
+
+ll n,k1,k2;
+vector<Node>N1,N2[8];
+
+bool cal(deque<Node> Q1,deque<Node> Q2)
+{
+    ll i;
+    for(i=1;i<min(k1,k2);i++) 
+        if(Q1[i].x!=Q2[i].x||Q1[i].y!=Q2[i].y) break;
+        else if((Q1[1].x-Q1[0].x)*(Q1[i].y-Q1[0].y)!=(Q1[1].y-Q1[0].y)*(Q1[i].x-Q1[0].x))return 0;
+    i--;
+    deque<Node>Q;
+    Q.pb(Q1[0]);
+    for(ll j=k1-1;j>=i;j--) Q.pb(Q1[j]);
+    for(ll j=i+1;j<k2;j++) Q.pb(Q2[j]);
+    if(Q[1].x-Q[0].x&&Q[1].y-Q[0].y) return 0;
+    int sum=0;
+    for(ll j=0;j<Q.size();j++)
+    {
+        ll l=j-1,r=j+1;
+        if(l<0) l=(int)Q.size()-1;
+        if(r==Q.size()) r=0;
+        ll num1=(Q[j].y-Q[l].y)*(Q[r].x-Q[j].x);
+        ll num2=(Q[r].y-Q[j].y)*(Q[j].x-Q[l].x);
+        ll num3=(Q[j].y-Q[l].y)*(Q[j].y-Q[r].y);
+        ll num4=(Q[j].x-Q[l].x)*(Q[r].x-Q[j].x);
+        if(num3==num4) sum++;
+        else if(num1!=num2) return 0;
+    }
+    if(sum==4) return 1;
+    return 0;
+}
+
+bool judge(deque<Node> Q1,deque<Node> Q2)
+{
+    node=Q1[0];
+    for(auto &x:Q1) 
+    {
+        x.x-=node.x;
+        x.y-=node.y;
+    }
+    node=Q2[0];
+    for(auto &x:Q2)
+    {
+        x.x-=node.x;
+        x.y-=node.y;
+    }
+    deque<Node>Q3,Q4;
+    Q3.pb(Q1[0]);
+    for(ll i=k1-1;i>0;i--) Q3.pb(Q1[i]);
+    Q4.pb(Q2[0]);
+    for(ll i=k2-1;i>0;i--) Q4.pb(Q2[i]);
+    if(cal(Q1,Q2)||cal(Q1,Q4)||cal(Q3,Q2)||cal(Q3,Q4)) return 1;
+    return 0;
+}
+
+bool solve()
+{
+    deque<Node>QN1;
+    for(auto &x:N1) QN1.pb(x);
+    for(ll i=0;i<8;i++)
+    {
+        deque<Node>QN2;
+        for(auto &x:N2[i]) QN2.pb(x);
+        for(ll j=0;j<k1;j++)
+        {
+            QN1.pb(QN1[0]);
+            QN1.pop_front();
+            for(ll k=0;k<k2;k++)
+            {
+                QN2.pb(QN2[0]);
+                QN2.pop_front();
+                if(judge(QN1,QN2)) return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+//    deque<Node>T1,T2;
+//    T1.pb({0,0});T1.pb({1,1});T1.pb({1,0});
+//    T2.pb({0,0});T2.pb({1,1});T2.pb({0,1});
+//    cout<<cal(T1,T2);
+    cin>>n;
+    while(n--)
+    {
+        cin>>k1;
+        N1.resize(k1);
+        for(auto &x:N1) cin>>x.x>>x.y;
+        cin>>k2;
+        for(auto &x:N2) x.resize(k2);
+        for(auto &x:N2[0]) cin>>x.x>>x.y;
+        for(ll i=1;i<=3;i++)
+        {
+            for(ll j=0;j<k2;j++)
+            {
+                N2[i][j].x=N2[i-1][j].y;
+                N2[i][j].y=-N2[i-1][j].x;
+            }
+        }
+        for(ll i=4;i<8;i++)
+        {
+            for(ll j=0;j<k2;j++)
+            {
+                N2[i][j].x=-N2[i-4][j].x;
+                N2[i][j].y=N2[i-4][j].y;
+            }
+        }
+        if(solve()) cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
+    }
+}
+
+

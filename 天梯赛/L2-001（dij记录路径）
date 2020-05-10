@@ -1,0 +1,120 @@
+#include<map>
+#include<set>
+#include<cmath>
+#include<queue>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<iostream>
+#include<algorithm>
+#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define ft first
+#define sd second
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);cout.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const ll maxn=6e5+7;
+const double eps=1e-10;
+const ll mod=1e9+7;
+
+int n,m,s,d;
+int num[510];   //储存每个城市有多少的救援队
+int dis[510][510];  //储存城市之间的距离
+int D[510];     //储存到起点的最短距离
+bool f[510];    //储存是否已经在dij算法中作为起点过
+int ans[510];  //每个城市当前累加的救援队数量
+int way[510];   //每个城市为终点的最短路径条数
+int pre[510];   //储存每个城市最短路径的前一个城市位置
+
+void printpath(int x)
+{
+    if(x==s)
+    {
+        cout<<x<<' ';
+        return;
+    }
+    printpath(pre[x]);
+    cout<<x;
+    if(x!=d) cout<<' ';
+    else cout<<endl;
+}
+
+void dij()
+{
+    for(int i=1;i<n;i++)
+    {
+        int x=-1;
+        for(int j=0;j<n;j++)
+        {
+            if(!f[j]&&(x==-1||D[j]<D[x])) x=j;
+        }
+        f[x]=1;
+        for(int j=0;j<n;j++)
+        {
+            if(D[x]+dis[x][j]<D[j])
+            {
+                D[j]=D[x]+dis[x][j];
+                way[j]=way[x];
+                ans[j]=ans[x]+num[j];
+                pre[j]=x;
+            }
+            else if(D[x]+dis[x][j]==D[j])
+            {
+                way[j]+=way[x];
+                if(ans[j]<ans[x]+num[j])
+                {
+                    pre[j]=x;
+                    ans[j]=ans[x]+num[j];
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);cout.tie(0);
+    cin>>n>>m>>s>>d;
+    memset(D,0x3f3f3f,sizeof(D));
+    memset(dis,0x3f3f3f,sizeof(dis));
+    for(int i=0;i<n;i++)
+    {
+        cin>>num[i];
+    }
+    for(int i=0;i<m;i++)
+    {
+        int a,b,c;
+        cin>>a>>b>>c;
+        dis[a][b]=c;
+        dis[b][a]=c;
+    }
+    D[s]=0;
+    way[s]=1;
+    ans[s]=num[s];
+    dij();
+    cout<<way[d]<<' '<<ans[d]<<endl;
+    printpath(d);
+}
+
+

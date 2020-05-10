@@ -1,0 +1,75 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+int t[17]={7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2};
+char m[17]="10X98765432";
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int n;
+    string s;
+    cin>>n;
+    for(int i=n;i;i--)
+    {
+        cin>>s;
+        bool flag=1;
+        int num=0;
+        for(int j=0;j<17;j++)
+        {
+            if(s[j]<='9'&&s[j]>='0')
+            {
+                num+=t[j]*(s[j]-'0');
+            }
+            else
+            {
+                flag=0;
+                break;
+            }
+        }
+        if(flag)
+        {
+            if(m[num%11]!=s[17])
+                flag=0;
+        }
+        if(!flag) cout<<s<<endl;
+        else n--;
+    }
+    if(n==0) cout<<"All passed"<<endl;
+}
+
+
+

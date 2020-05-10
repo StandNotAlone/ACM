@@ -1,0 +1,175 @@
+#include<map>
+#include<set>
+#include<cmath>
+#include<queue>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<iostream>
+#include<algorithm>
+#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define ft first
+#define sd second
+#define pb push_back
+#define ll long long
+#define vec vector<ll>
+#define mat vector<vector<ll>>
+//cout<<fixed<<setprecision(6)<<
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const ll maxn=6e5+7;
+const double eps=1e-10;
+
+bool judge1(char c)
+{
+    bool f=1;
+    if(c>='0'&&c<='9') f=0;
+    if(c>='A'&&c<='Z') f=0;
+    if(c>='a'&&c<='z') f=0;
+    if(c==' ') f=0;
+    return f;
+}
+
+bool judge2(char c)
+{
+    bool f=1;
+    if(c>='0'&&c<='9') f=0;
+    if(c>='A'&&c<='Z') f=0;
+    if(c>='a'&&c<='z') f=0;
+    return f;
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    int n;
+    cin>>n;
+    cin.get();
+    while(n--)
+    {
+        string s;
+        getline(cin,s);
+        cout<<s<<endl<<"AI: ";
+        int i=0;
+        while(s[i]==' ') i++;
+        string New;
+        for(;i<s.size();i++)
+        {
+            if(s[i]=='?') 
+            {
+                if(New.size()&&New[(ll)New.size()-1]==' ') New.pop_back();
+                New+='!';
+            }
+            else if(s[i]>='A'&&s[i]<='Z'&&s[i]!='I') New+=s[i]+32;
+            else if(s[i]==' ')
+            {
+                while(s[i+1]==' ') i++;
+                New+=' ';
+            }
+            else 
+            {
+                if(judge1(s[i])&&New.size()&&New[(ll)New.size()-1]==' ') New.pop_back();
+                New+=s[i];
+            }
+        }
+        while(New.size()&&New[(ll)New.size()-1]==' ') New.pop_back();
+        s.clear();
+        //cout<<New<<endl;
+        for(i=0;i<New.size();i++)
+        {
+            bool flag=1;
+            if(New[i]=='I')
+            {
+                bool f=1;
+                if(i&&!judge2(New[i-1])) f=0;
+                if(i+1<New.size()&&!judge2(New[i+1])) f=0;
+                if(f) 
+                {
+                    s+="you";
+                    flag=0;
+                }
+            }
+            if(New[i]=='m')
+            {
+                bool f=1;
+                if(i&&!judge2(New[i-1])) f=0;
+                if(i+1<New.size())
+                {
+                    if(New[i+1]=='e')
+                    {
+                        if(i+2<New.size()&&!judge2(New[i+2])) f=0;
+                    }
+                    else f=0;
+                }
+                if(f) 
+                {
+                    s+="you";
+                    i++;
+                    flag=0;
+                }
+            }
+            if(New[i]=='c')
+            {
+                bool f=1;
+                if(i&&!judge2(New[i-1])) f=0;
+                if(i+6<New.size())
+                {
+                    if(New.substr(i,7)!="can you")
+                    {
+                        f=0;
+                    }
+                    else if(i+7<New.size()&&!judge2(New[i+7])) f=0;
+                }
+                else f=0;
+                if(f)
+                {
+                    s+="I can";
+                    i+=6;
+                    flag=0;
+                }
+            }
+            if(New[i]=='c')
+            {
+                bool f=1;
+                if(i&&!judge2(New[i-1])) f=0;
+                if(i+8<New.size())
+                {
+                    if(New.substr(i,9)!="could you")
+                    {
+                        f=0;
+                    }
+                    else if(i+9<New.size()&&!judge2(New[i+9])) f=0;
+                }
+                else f=0;
+                if(f)
+                {
+                    s+="I could";
+                    i+=8;
+                    flag=0;
+                }
+            }
+            if(flag) s+=New[i];
+        }
+        cout<<s<<endl;
+    }
+    
+}
+
+

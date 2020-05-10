@@ -1,0 +1,83 @@
+#include<algorithm>
+#include<iostream>
+#include<cstring>
+#include<fstream>
+#include<iomanip>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cmath>
+#include<queue>
+#include<map>
+#include<set>
+//#include<bits/stdc++.h>
+#define INF 0x7f7f7f7f //2139062143
+#define INF1 0x3f3f3f3f //1061109567
+#define INF2 2147483647
+#define llINF 9223372036854775807
+#define pi 3.141592653589793//23846264338327950254
+#define pb push_back
+#define ll long long
+//freopen(".in","r",stdin);
+//freopen(".out","w",stdout);
+//ifstream f1(".txt");
+//ofstream f2(".txt");
+//ios::sync_with_stdio(false);
+//cin.tie(0);
+using namespace std;
+#define local
+#ifdef local
+#endif
+const int maxn=INF;
+
+ll num[1000010];
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll t,n,m,p;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n>>m>>p;
+        ll flag1=1,flag2=1;
+        for(ll i=0;i<n*m;i++)
+            num[i]=0;
+        for(ll i=0;i<p;i++)
+        {
+            ll x,y,ne;
+            cin>>x>>y>>ne;
+            if(x>=0&&x<n&&y>=0&&y<m);
+            else flag1=0;
+            x=x*m+y;
+            if(x>=0&&x<n*m) num[x]=ne;
+            else flag2=0;
+        }
+        if(flag2)
+        {
+            for(ll i=0;i<n;i++)
+            {
+                for(ll j=0;j<m;j++)
+                {
+                    if(j) cout<<' ';
+                    cout<<num[i*m+j];
+                }
+                cout<<endl;
+            }
+            if(flag1)
+            {
+                cout<<"Accepted"<<endl;
+            }
+            else
+            {
+                cout<<"Undefined Behaviour"<<endl;
+            }
+        }
+        else cout<<"Runtime error"<<endl;
+    }
+}
+
+
+
+
