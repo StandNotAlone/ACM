@@ -1,0 +1,37 @@
+//树状数组
+ll tree[maxn];
+ll sp=0;
+
+void add(ll x,ll v)//单点修改，增加v个x进入数组
+{
+    for(;x<n;x+=x&-x) tree[x]+=v;
+}
+
+ll sum(ll x)    //查询下标小于等于x的元素的前缀和
+{
+    ll ret=0;
+    for(;x>0;x-=x&-x) ret+=tree[x];
+}
+
+void getsp()
+{
+    ll temp=n;
+    while(temp)
+    {
+        temp>>=1;
+        sp++;
+    }
+}
+
+ll kth(ll k)        //查询数组中从小到大第K小的数字
+{
+    ll ret=0;
+    ll sum=0;
+    for(ll i=sp-1;i>=0;i--)     //sp为N的二进制最高位
+    {
+        ret+=(1<<i);
+        if(ret>=N||sum+tree[ret]>=k) ret-=(1<<i);
+        else sum+=tree[ret];
+    }
+    return ret+1;
+}
