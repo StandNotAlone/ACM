@@ -1,0 +1,24 @@
+vector<ll>fa;//并查集数组
+vector<ll>size;//size[i]记录i为代表元素的集合有几个元素
+vector<ll>dis;  //dis[i]记录i距离自己所在集合的队头的距离
+
+void fainit()//并查集数组初始化
+{
+    for(ll i=0;i<fa.size();i++) fa[i]=i;
+}
+
+ll get(ll x) //访问x所在的根节点(代表元素)  边带权版本
+{
+    if(x==fa[x]) return x;
+    ll root=get(fa[x]);     //递归计算集合代表元素，且压缩路径和更新距离权值
+    dis[x]+=dis[fa[x]];     //更新距离权值
+    return fa[x]=root; //路径压缩
+}
+
+void famerge(ll x,ll y)     //合并x和y所在的集合,边带权版本，把x集合接到y集合尾部
+{
+    x=get(x);y=get(y);
+    fa[x]=y;
+    dis[x]=size[y]; //x集合队头到更新后的队头的距离为y集合的大小
+    size[y]+=size[x];   //更新合并后的集合y的大小
+}
