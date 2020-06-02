@@ -1,8 +1,9 @@
 vector<ll>fa;//并查集数组
 
-void fainit()//并查集数组初始化
+void init()//并查集数组初始化
 {
-    rep(i,fa.size()) fa[i]=i;
+	for(ll i=0;i<fa.size();i++)
+     fa[i]=i;
 }
 
 ll get(ll x)//访问x所在的根节点(代表元素）
@@ -10,7 +11,7 @@ ll get(ll x)//访问x所在的根节点(代表元素）
     return x==fa[x]?x:fa[x]=get(fa[x]);//路径压缩，让当前位置指示的父亲直接为根节点（代表元素）
 }
 
-void famerge(ll x,ll y)//合并x和y所在的集合，即让x的根节点作为y的树根的子节点
+void merge(ll x,ll y)//合并x和y所在的集合，即让x的根节点作为y的树根的子节点
 {
     fa[get(x)]=get(y);
 }
