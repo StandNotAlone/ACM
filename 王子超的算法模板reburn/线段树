@@ -1,46 +1,63 @@
+//线段树
+
 ll A[maxn];
 
-struct SegmentTree
+struct Node
 {
-    ll l,r;
-    ll max;
-}ST[4*maxn];
+    ll l,r,data,ope;
+};
 
-void buildST(ll l,ll r,ll loca)
+Node st[4*maxn];
+
+void build(ll l,ll r,ll loca)
 {
-    //cout<<l<<' '<<r<<' '<<loca<<endl;
-    ST[loca].l=l;
-    ST[loca].r=r;
-    if(l==r)
+    st[loca].l=l;
+    st[loca].r=r;
+    st[loca].ope=0;
+    if(l==r) st[loca].data=1;
+    else
     {
-        ST[loca].max=A[l];
-        return;
+        ll mid=(l+r)>>1;
+        build(l,mid,loca<<1);
+        build(mid+1,r,(loca<<1)+1);
+        st[loca].data=l-r+1;
     }
-    ll mid=l+((r-l)>>1);
-    buildST(l,mid,loca<<1);
-    buildST(mid+1,r,(loca<<1)+1);
-    ST[loca].max=max(ST[loca<<1].max,ST[(loca<<1)+1].max);
 }
 
-void changeST(ll x,ll loca)
+void spread(ll loca)
 {
-    if(ST[loca].l==ST[loca].r)
+    if(st[loca].ope)
     {
-        ST[loca].max=A[x];
-        return;
+        st[loca<<1].data=st[loca].ope*(st[loca<<1].r-st[loca<<1].l+1);
+        st[(loca<<1)+1].data=st[loca].ope*(st[(loca<<1)+1].r-st[(loca<<1)+1].l+1);
+        st[loca<<1].ope=st[loca].ope;
+        st[(loca<<1)+1].ope=st[loca].ope;
+        st[loca].ope=0;
     }
-    ll mid=ST[loca].l+((ST[loca].r-ST[loca].l)>>1);
-    if(mid>=x) changeST(x,loca<<1);
-    else changeST(x,(loca<<1)+1);
-    ST[loca].max=max(ST[loca<<1].max,ST[(loca<<1)+1].max);
 }
 
-ll askST(ll l,ll r,ll loca)
+void change(ll l,ll r,ll loca,ll ope)
 {
-    if(l<=ST[loca].l&&r>=ST[loca].r) return ST[loca].max;
-    ll mid=ST[loca].l+((ST[loca].r-ST[loca].l)>>1);
-    ll val=-INF;
-    if(l<=mid) val=max(val,askST(l,r,loca*2));
-    if(r>mid) val=max(val,askST(l,r,loca*2+1));
-    return val;
+    if(st[loca].l>=l&&st[loca].r<=r)
+    {
+        st[loca].data=ope*(st[loca].r-st[loca].l+1);
+        st[loca].ope=ope;
+        return;
+    }
+    spread(loca);
+    ll mid=(st[loca].r+st[loca].l)>>1;
+    if(l<=mid) change(l,r,loca<<1,ope);
+    if(r>mid) change(l,r,(loca<<1)+1,ope);
+    st[loca].data=st[loca<<1].data+st[(loca<<1)+1].data;
+}
+
+ll ask(ll l,ll r,ll loca)
+{
+    if(st[loca].l>=l&&st[loca].r<=r) return st[loca].data;
+    spread(loca);
+    ll mid=(st[loca].l+st[loca].r)>>1;
+    ll temp=0;
+    if(l<=mid) temp+=ask(l,r,loca<<1);
+    if(r>mid) temp+=ask(l,r,(loca<<1)+1);
+    return temp;
 }
