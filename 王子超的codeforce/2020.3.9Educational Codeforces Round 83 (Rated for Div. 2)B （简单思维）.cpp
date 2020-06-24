@@ -36,6 +36,8 @@ using namespace std;
 const ll maxn=1e10;
 const double eps=1e-10;
 
+
+
 int main()
 {
 	ios::sync_with_stdio(false);

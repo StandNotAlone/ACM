@@ -36,6 +36,10 @@ using namespace std;
 const ll maxn=1e10;
 const double eps=1e-10;
 
+//因为都是正多边形，每两个相邻点和重心构成的夹角都是相等的，如果正m边形的顶点全在正n边形的顶点上
+//也就意味着360度/m乘以任意的系数，一定是可以被360度/n所整除的
+//其实也就是n一定能被m整除
+
 int main()
 {
 	ios::sync_with_stdio(false);

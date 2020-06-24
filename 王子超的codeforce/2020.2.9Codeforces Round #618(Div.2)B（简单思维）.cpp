@@ -29,6 +29,12 @@ using namespace std;
 #ifdef local
 #endif
 const int maxn=INF;
+
+//由于我们在两个班级当中，取得都是排名在中间的那个人
+//针对2n个人，我们先对num[2n]这个数组从小到大排序
+//我们可以总结出一个结论，所有的分配方案的差值一定是大于等于num[n+1]-num[n](下标从1开始）
+//如果我们
+
 int main()
 {
     ios::sync_with_stdio(false);
