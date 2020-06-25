@@ -1,0 +1,10 @@
+//实数gcd
+double gcd(double x,double y)
+{
+    while(fabs(x)>eps&&fabs(y)>eps)
+    {
+        if(x>y) x-=floor(x/y)*y;
+        else y-=floor(y/x)*x;
+    }
+    return x+y;
+}
