@@ -42,7 +42,7 @@
 //ofstream f2("/Users/wangzichao/Documents/wzc.out");
 #define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 
-int read()      //æ•´æ•°è¯»å…¥æŒ‚
+int read()      //ÕûÊý¶ÁÈë¹Ò
 {
     int x=0,f=1;
     char c=getchar();
@@ -63,98 +63,58 @@ using namespace std;
 #define local
 #ifdef local
 #endif
-const ll maxn=8e3+7;
+const ll maxn=1e2+7;
 const double eps=1e-10;
 const ll mod=1e9+7;
 
-ll n,now;
+ll n,m;
 
-ll ans[maxn];
+ll field[maxn][maxn];
 
-struct Node
-{
-    ll l,r,ope;
-};
-
-Node st[4*maxn];
-
-void build(ll l,ll r,ll loca)
-{
-    st[loca].l=l;
-    st[loca].r=r;
-    st[loca].ope=-1;
-    if(l==r) return ;
-    else
-    {
-        ll mid=(l+r)>>1;
-        build(l,mid,loca<<1);
-        build(mid+1,r,loca<<1|1);
-    }
-}
-
-void spread(ll loca)
-{
-    if(st[loca].ope!=-2)
-    {
-        st[loca<<1].ope=st[loca<<1|1].ope=st[loca].ope;
-    }
-    st[loca].ope=-2;
-}
-
-void change(ll l,ll r,ll loca,ll ope)
-{
-    if(st[loca].l>=l&&st[loca].r<=r)
-    {
-        st[loca].ope=ope;
-    }
-    else
-    {
-        spread(loca);
-        ll mid=(st[loca].l+st[loca].r)>>1;
-        if(l<=mid) change(l,r,loca<<1,ope);
-        if(r>mid) change(l,r,loca<<1|1,ope);
-    }
-}
-
-void ask(ll loca)
-{
-    if(st[loca].ope==-2)
-    {
-        ask(loca<<1);
-        ask(loca<<1|1);
-    }
-    else if(st[loca].ope==-1) now=-1;
-    else
-    {
-        if(st[loca].ope!=now)
-        {
-            ans[st[loca].ope]++;
-            now=st[loca].ope;
-        }
-    }
-}
+ll sum[maxn][maxn];
 
 int32_t main()
 {
     IOS;
-    while(scanf("%lld",&n)!=EOF)
+    memset(sum,0,sizeof(sum));
+    cin>>n>>m;
+    REP(i,n)
+        REP(j,m)
+            cin>>field[i][j];
+    REP(i,n)
     {
-        ll l,r,c;
-        build(1,8001,1);
-        for(ll i=0;i<n;i++)
+        REP(j,m)
         {
-            scanf("%lld%lld%lld",&l,&r,&c);
-            change(l+1,r,1,c);
+            sum[i][j]=sum[i][j-1]+field[i][j];
         }
-        memset(ans,0,sizeof(ans));
-        now=-1;
-        ask(1);
-        for(ll i=0;i<=8000;i++)
-        {
-            if(ans[i]) printf("%lld %lld\n",i,ans[i]);
-        }
-        printf("\n");
     }
+    ll a,b;
+    cin>>a>>b;
+    ll ans=llINF;
+    for(ll i=1;i+a-1<=n;i++)
+    {
+        for(ll j=1;j+b-1<=m;j++)
+        {
+            ll temp=0;
+            for(ll k=i;k<i+a;k++)
+            {
+                temp+=sum[k][j+b-1]-sum[k][j-1];
+            }
+            ans=min(ans,temp);
+        }
+    }
+    for(ll i=1;i+b-1<=n;i++)
+    {
+        for(ll j=1;j+a-1<=m;j++)
+        {
+            ll temp=0;
+            for(ll k=i;k<i+b;k++)
+            {
+                temp+=sum[k][j+a-1]-sum[k][j-1];
+            }
+            ans=min(ans,temp);
+        }
+    }
+    cout<<ans<<endl;
 }
-
 

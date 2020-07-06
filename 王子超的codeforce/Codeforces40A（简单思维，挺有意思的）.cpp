@@ -42,7 +42,7 @@
 //ofstream f2("/Users/wangzichao/Documents/wzc.out");
 #define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 
-int read()      //æ•´æ•°è¯»å…¥æŒ‚
+int read()      //ÕûÊý¶ÁÈë¹Ò
 {
     int x=0,f=1;
     char c=getchar();
@@ -63,98 +63,27 @@ using namespace std;
 #define local
 #ifdef local
 #endif
-const ll maxn=8e3+7;
+const ll maxn=1e3+7;
 const double eps=1e-10;
 const ll mod=1e9+7;
 
-ll n,now;
 
-ll ans[maxn];
-
-struct Node
-{
-    ll l,r,ope;
-};
-
-Node st[4*maxn];
-
-void build(ll l,ll r,ll loca)
-{
-    st[loca].l=l;
-    st[loca].r=r;
-    st[loca].ope=-1;
-    if(l==r) return ;
-    else
-    {
-        ll mid=(l+r)>>1;
-        build(l,mid,loca<<1);
-        build(mid+1,r,loca<<1|1);
-    }
-}
-
-void spread(ll loca)
-{
-    if(st[loca].ope!=-2)
-    {
-        st[loca<<1].ope=st[loca<<1|1].ope=st[loca].ope;
-    }
-    st[loca].ope=-2;
-}
-
-void change(ll l,ll r,ll loca,ll ope)
-{
-    if(st[loca].l>=l&&st[loca].r<=r)
-    {
-        st[loca].ope=ope;
-    }
-    else
-    {
-        spread(loca);
-        ll mid=(st[loca].l+st[loca].r)>>1;
-        if(l<=mid) change(l,r,loca<<1,ope);
-        if(r>mid) change(l,r,loca<<1|1,ope);
-    }
-}
-
-void ask(ll loca)
-{
-    if(st[loca].ope==-2)
-    {
-        ask(loca<<1);
-        ask(loca<<1|1);
-    }
-    else if(st[loca].ope==-1) now=-1;
-    else
-    {
-        if(st[loca].ope!=now)
-        {
-            ans[st[loca].ope]++;
-            now=st[loca].ope;
-        }
-    }
-}
 
 int32_t main()
 {
     IOS;
-    while(scanf("%lld",&n)!=EOF)
+    ll x,y;
+    cin>>x>>y;
+    ll temp=x*x+y*y;
+    ll t=sqrt(temp);
+    if(t*t==temp) cout<<"black"<<endl;
+    else
     {
-        ll l,r,c;
-        build(1,8001,1);
-        for(ll i=0;i<n;i++)
-        {
-            scanf("%lld%lld%lld",&l,&r,&c);
-            change(l+1,r,1,c);
-        }
-        memset(ans,0,sizeof(ans));
-        now=-1;
-        ask(1);
-        for(ll i=0;i<=8000;i++)
-        {
-            if(ans[i]) printf("%lld %lld\n",i,ans[i]);
-        }
-        printf("\n");
+        bool flag;
+        if(x*y>0) flag=1;
+        else flag=0;
+        if((t+flag+1)&1) cout<<"white"<<endl;
+        else cout<<"black"<<endl;
     }
 }
-
 
