@@ -1,19 +1,12 @@
-void qsort(int q,int p)
+void qsort(int L,int R)
 {
-    int l=q,r=p,mid=w[(q+p)/2],t;
-    while(l<=r)
+    int x=num[(L+R)/2],i=L,j=R;
+    while(i<=j)
     {
-        while(w[l]<mid)l++;
-        while(w[r]>mid)r--;
-        if(l<=r)
-        {
-            t=w[l];
-            w[l]=w[r];
-            w[r]=t;
-            l++;
-            r--;
-        }
+        while(num[i]<x) i++;
+        while(num[j]>x) j--;
+        if(i<=j) swap(num[i++],num[j--]);
     }
-    if(l<p) qsort(l,p);
-    if(r>q) qsort(q,r);
+    if(i<R) qsort(i,R);
+    if(j>L) qsort(L,j);
 }
