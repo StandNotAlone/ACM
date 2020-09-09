@@ -9,14 +9,6 @@
 #define pi 3.141592653589793238462643383279502
 using namespace std;
 
-void swap(int *p1,int *p2)
-{
-    int t;
-    t=*p1;
-    *p1=*p2;
-    *p2=t;
-}
-
 int main()
 {
     double x1,y1,x2,y2,x3,y3,x4,y4,t,xx1,xx2,yy1,yy2;
