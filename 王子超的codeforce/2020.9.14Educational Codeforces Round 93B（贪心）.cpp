@@ -8,11 +8,6 @@ vector<int>num;
 int n;
 int cas[107];
 
-bool cmp(int a,int b)
-{
-    return a>b;
-}
-
 int32_t main()
 {
     IOS;
@@ -23,20 +18,20 @@ int32_t main()
         cin>>n;
         num.clear();
         num.resize(n);
-        deque<int>Q;
+        deque<int>Q;//用于存储不锁定位置上的数字，排序后进行后续构造操作
         for(int i=0;i<n;i++) cin>>num[i];
         for(int i=0;i<n;i++)
         {
             cin>>cas[i];
             if(!cas[i]) Q.push_back(num[i]);
         }
-        sort(Q.begin(),Q.end(),cmp);
+        sort(Q.begin(),Q.end());
         for(int i=0;i<n;i++)
         {
-            if(!cas[i])
+            if(!cas[i])//对不锁定位置，我们依次按照从大到小的顺序把所有数字放进去。
             {
-                num[i]=Q[0];
-                Q.pop_front();
+                num[i]=Q[Q.size()-1];
+                Q.pop_back();
             }
         }
         for(int i=0;i<n;i++) cout<<num[i]<<' ';
