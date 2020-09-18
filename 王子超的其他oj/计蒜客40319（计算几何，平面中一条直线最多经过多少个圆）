@@ -1,0 +1,103 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define llINF 9223372036854775807
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+using namespace std;
+const double eps=1e-10;
+
+double add(double a,double b)
+{
+    if(fabs(a+b)<eps*(fabs(a)+fabs(b))) return 0;
+    return a+b;
+}
+
+struct Point
+{
+    double x,y;
+    Point(){}
+    Point(double x,double y):x(x),y(y){}
+    Point operator + (Point P)
+    {
+        return Point(add(x,P.x),add(y,P.y));
+    }
+    Point operator - (Point P)
+    {
+        return Point(add(x,-P.x),add(y,-P.y));
+    }
+    Point operator * (double d)
+    {
+        return Point(x*d,y*d);
+    }
+    bool operator == (Point P)
+    {
+        return fabs(x-P.x)<eps&&fabs(y-P.y)<eps;
+    }
+    double dot(Point P)//内积
+    {
+        return add(x*P.x,y*P.y);
+    }
+    double det(Point P)//外积
+    {
+        return add(x*P.y,-y*P.x);
+    }
+};
+
+bool on_seg(Point P1,Point P2,Point P3)//判断点P3是否在线段P1-P2上
+{
+    return (P1-P3).det(P2-P3)==0&&(P1-P3).dot(P2-P3)<=0;
+}
+
+//计算直线P1-P2与直线Q1-Q2的交点位置，注意这必须建立在两直线不平行的条件下
+Point intersection(Point P1,Point P2,Point Q1,Point Q2)
+{
+    return P1+(P2-P1)*((Q2-Q1).det(Q1-P1)/(Q2-Q1).det(P2-P1));
+}
+
+Point point[107];
+
+int n;
+
+bool check(Point a1,Point a2,Point p)
+{
+    return fabs((a2-a1).det(p-a1)/sqrt((a2-a1).dot(a2-a1)))<1+eps;
+}
+
+int cal(Point a1,Point a2)
+{
+    int ret=0;
+    for(int i=1;i<=n;i++)
+        if(check(a1,a2,point[i])) ret++;
+    return ret;
+}
+
+int32_t main()
+{
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++) scanf("%lf%lf",&point[i].x,&point[i].y);
+    int ans=0;
+
+    for(int i=1;i<=n;i++)
+        for(int j=i+1;j<=n;j++)
+        {
+            if(point[i]==point[j]) continue;
+            Point mid=(point[i]+point[j])*0.5;
+            Point mm=point[i]-point[j];
+            swap(mm.x,mm.y);
+            mm.x=-mm.x;
+            mm=mm+mid;
+            ans=max(ans,cal(mid,mm));
+        }
+
+    for(int i=1;i<=n;i++)
+        for(int j=i+1;j<=n;j++)
+            for(int k=j+1;k<=n;k++)
+            {
+                if(fabs((point[i]-point[j]).det(point[k]-point[j]))<eps) continue;
+                ans=max(ans,cal((point[i]+point[j])*0.5,(point[i]+point[k])*0.5));
+                ans=max(ans,cal((point[j]+point[i])*0.5,(point[j]+point[k])*0.5));
+                ans=max(ans,cal((point[k]+point[i])*0.5,(point[k]+point[j])*0.5));
+            }
+
+    if(ans==0) ans=n;
+    printf("%d\n",ans);
+}
