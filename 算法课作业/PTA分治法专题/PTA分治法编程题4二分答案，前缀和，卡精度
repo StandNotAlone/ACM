@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define llINF 9223372036854775807
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+using namespace std;
+const double eps=1e-5;
+
+int n,L;
+vector<double>num;
+
+bool check(double x)
+{
+    bool flag=0;
+    vector<double>temp(n);
+    double now=0,pre=0;
+    for(int i=0;i<n;i++)
+    {
+        temp[i]=num[i]-x;
+        now+=temp[i];
+        if(i) temp[i]+=temp[i-1];
+        if(i>=L) pre=min(pre,temp[i-L]);
+        if(i>=L-1&&now>=pre) flag=1;
+    }
+    return flag;
+}
+
+int32_t main()
+{
+    IOS;
+    cin>>n>>L;
+    num.resize(n);
+    for(auto &x:num) cin>>x;
+    double low=-1e6,high=1e6;
+    for(int i=1;i<n;i++) {low=min(low,num[i]);high=max(high,num[i]);}
+    while(high-low>eps)
+    {
+        double mid=(high+low)/2;
+        if(!check(mid)) high=mid;
+        else low=mid;
+    }
+    cout<<(int)(high*1000)<<endl;
+}

@@ -1,0 +1,21 @@
+/* Your function will be put here */
+void merge_pass( ElementType list[], ElementType sorted[], int N, int length )//这个函数是让你实现把list数组中的数字按照长度length划分成若干个区间，两两相邻区间归并排序，放入到sorted数组中
+{
+    int tar=0;//从左到右排序，tar为当前待排序的最左位置
+    while(N-tar>length)//当剩下的位置不足两个length区间的时候结束循环
+    {
+        int tar1=tar,tar2=tar1+length,tar3=tar;//tar1为第一个区间的左位置，tar2为第二个区间的左位置，tar3为sorted数组当前待存放位置
+        int limit_tar1=tar1+length;//第一个区间的右侧限制
+        int limit_tar2=limit_tar1+length;//第二个区间的右侧限制
+        if(limit_tar2>N) limit_tar2=N;//第二个区间的右侧限制不能超过数组长度N
+        while(tar1<limit_tar1&&tar2<limit_tar2)
+        {
+            if(list[tar1]>list[tar2]) sorted[tar3++]=list[tar2++];
+            else sorted[tar3++]=list[tar1++];
+        }
+        while(tar1<limit_tar1) sorted[tar3++]=list[tar1++];
+        while(tar2<limit_tar2) sorted[tar3++]=list[tar2++];
+        tar=limit_tar2;
+    }
+    while(tar<N) {sorted[tar]=list[tar];tar++;}//不足两个length区间跳出循环的时候，后面还有一段需要原样复制过去
+}

@@ -1,0 +1,13 @@
+Position BinarySearch( List L, ElementType X )
+{
+    int l=1,r=L->Last;
+    while(l<r)
+    {
+        int mid=(l+r)/2;//当前区间的中间位置
+        if(L->Data[mid]==X) {l=mid;break;}//找到了就直接退出，这里用l来指代最后找到的位置
+        else if(L->Data[mid]>X) r=mid;//如果中间的数比目标大的话，让右区间变成mid
+        else l=mid+1;//如果中间的数比目标小的话，让左区间变成mid+1,这里的原因是由于/2是向下取整的，(3+4)/2=3，讨论一下l=3,r=4的情况来理解这里
+    }
+    if(L->Data[l]==X) return l;
+    else return NotFound;
+}

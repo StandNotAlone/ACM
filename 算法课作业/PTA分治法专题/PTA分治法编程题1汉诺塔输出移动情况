@@ -1,0 +1,25 @@
+#include<stdio.h>
+
+int count=0;
+
+void move(char a,char b)//从a柱移动一个圆盘到c柱
+{
+    printf("%c-->%c\n",a,b);
+    count++;
+}
+
+void Hannoi(char a,char b,char c,int n)//代表有n个盘子在a柱上，借助b柱，全部移动到c柱
+{
+    if(n==1) {move(a,c);return;}//递归终止，只有一个盘子的时候直接移动过去
+    Hannoi(a,c,b,n-1);//第一步是把n-1个圆盘借助c柱先移动到b柱上
+    move(a,c);//再把剩下最大的那个直接移动到c柱上
+    Hannoi(b,a,c,n-1);//现在n-1个剩下的盘子在b柱上，借助a柱移动到c柱上
+}
+
+int main()
+{
+    int n;
+    scanf("%d",&n);
+    Hannoi('A','B','C',n);
+    printf("%d\n",count);
+}

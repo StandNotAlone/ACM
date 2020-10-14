@@ -1,0 +1,13 @@
+//这个写写注释讲不清楚
+int Power(int a,int b)
+{
+    int ret=1;
+    a%=MOD;
+    while(b)
+    {
+        if(b%2) ret=ret*a%MOD;
+        a=a*a%MOD;
+        b/=2;
+    }
+    return ret;
+}

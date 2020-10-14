@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define llINF 9223372036854775807
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+using namespace std;
+const ll maxn=1e6+7;
+
+int n;
+int a[maxn];
+
+int find(int a[],int n,int tar)
+{
+    int L=0,R=n-1;
+    int l=L,r=R;
+    while(1)
+    {
+        int midnum=a[l];
+        while(l<r)
+        {
+            while(l<r&&a[r]>=midnum) r--;
+            if(l!=r) a[l]=a[r];
+            while(l<r&&a[l]<=midnum) l++;
+            if(l!=r) a[r]=a[l];
+        }
+        a[l]=midnum;
+        if(l==tar) break;
+        else if(l<tar) {L=++l;r=R;}
+        else {R=--r;l=L;}
+    }
+    return a[tar];
+}
+
+int32_t main()
+{
+    IOS;
+    int tar;
+    cin>>n>>tar;
+    for(int i=0;i<n;i++) cin>>a[i];
+    cout<<find(a,n,tar-1)<<endl;
+}
