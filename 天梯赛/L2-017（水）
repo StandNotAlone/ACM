@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define INF 0x7f7f7f7f //2139062143
+#define llINF 9223372036854775807
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+using namespace std;
+
+int32_t main()
+{
+    int n;
+    scanf("%d",&n);
+    ll sum=0;
+    vector<ll>num(n);
+    for(auto &x:num)
+    {
+        scanf("%lld",&x);
+        sum+=x;
+    }
+    sort(num.begin(),num.end());
+    int lim=n/2;
+    ll temp=0;
+    for(int i=0;i<lim;i++) temp+=num[i];
+    printf("Outgoing #: %d\n",n-n/2);
+    printf("Introverted #: %d\n",n/2);
+    printf("Diff = %lld\n",sum-temp*2);
+}

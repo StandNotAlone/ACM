@@ -1,0 +1,23 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define INF 0x7f7f7f7f //2139062143
+#define llINF 9223372036854775807
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+using namespace std;
+
+int32_t main()
+{
+    int n;
+    scanf("%d",&n);
+    vector<int>cas;
+    while(n--)
+    {
+        int x;scanf("%d",&x);
+        if(cas.size()==0||cas[cas.size()-1]<x) cas.push_back(x);
+        else
+        {
+            cas[lower_bound(cas.begin(),cas.end(),x)-cas.begin()]=x;
+        }
+    }
+    printf("%d\n",(int)cas.size());
+}
