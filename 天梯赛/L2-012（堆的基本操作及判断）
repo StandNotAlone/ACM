@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+#define ll long long
+#define INF 0x7f7f7f7f //2139062143
+#define llINF 9223372036854775807
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+using namespace std;
+const int maxn=1e3+7;
+
+int dui[maxn],n,m,tar[20007];
+//dui[]为小根堆数组，dui[1]为根，dui[i]的两个子节点为dui[i*2]和dui[i*2+1]
+//tar[i]记录的是值i-10000保存在dui[]数组中下标为多少
+
+int32_t main()
+{
+    IOS
+    cin>>n>>m;
+    for(int i=1;i<=n;i++)
+    {
+        cin>>dui[i];//插入第i个数到当前堆的末尾
+        dui[i]+=10000;
+        tar[dui[i]]=i;
+        int j=i;
+        while(j>1)//从当前位置依次向上更新小根堆的堆顶值
+        {
+            if(dui[j/2]>dui[j])
+            {
+                swap(tar[dui[j/2]],tar[dui[j]]);//交换位置数据
+                swap(dui[j/2],dui[j]);
+                j/=2;
+            }
+            else break;
+        }
+    }
+    while(m--)
+    {
+        bool flag=1;
+        int x,y;cin>>x;x+=10000;
+        string s;cin>>s;
+        if(s[0]=='a')//代表当前的语句为判断x和y是否为兄弟节点
+        {
+            cin>>y;y+=10000;
+            if(tar[x]==tar[y]||tar[x]/2!=tar[y]/2) flag=0;
+            getline(cin,s);//读取完y之后后面还有"are siblings"部分等待读取，用geline函数处理掉
+        }
+        else
+        {
+            cin>>s;
+            if(s[0]=='a')
+            {
+                cin>>s>>s>>y;y+=10000;
+                if(tar[x]/2!=tar[y]) flag=0;
+            }
+            else
+            {
+                cin>>s;
+                if(s[0]=='r')
+                {
+                    if(dui[1]!=x) flag=0;
+                }
+                else
+                {
+                    cin>>s>>y;y+=10000;
+                    if(tar[y]/2!=tar[x]) flag=0;
+                }
+            }
+        }
+        if(flag) cout<<"T"<<endl;
+        else cout<<"F"<<endl;
+    }
+}
