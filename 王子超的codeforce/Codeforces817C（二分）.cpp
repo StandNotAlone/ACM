@@ -47,8 +47,7 @@ ll bs()
     while(l<r-1)        //由于最小的那个真大数减去它各位数字的和后可能大于也可能等于s，不方便l=r直接跳出循环，所以让l=r-1时就跳出去
     {
         mid=l+(r-l)/2;
-        int flag=judge(mid);
-        if(flag) r=mid;
+        if(judge(mid)) r=mid;
         else l=mid;
     }
     if(judge(l)) return l;  //从左侧开始检测是不是真大数
