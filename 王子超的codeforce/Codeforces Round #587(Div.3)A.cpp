@@ -9,10 +9,17 @@ int main()
 {
     IOS
     int n;cin>>n;
-    while(n--)
+    string s;cin>>s;
+    int ans=0;
+    for(int i=1;i<n;i+=2)
     {
-        int a;cin>>a;
-        if(a&1) cout<<a<<' ';
-        else cout<<a-1<<' ';//CF对格式的要求不是非常严格，只有单行输出的时候，末尾空格和换行不做严格要求
+        if(s[i]==s[i-1])
+        {
+            if(s[i]=='a') s[i-1]='b';
+            else s[i-1]='a';
+            ans++;
+        }
     }
+    cout<<ans<<endl;
+    cout<<s<<endl;
 }

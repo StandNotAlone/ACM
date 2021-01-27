@@ -8,11 +8,11 @@ using namespace std;
 int main()
 {
     IOS
-    int n;cin>>n;
-    while(n--)
+    int n,t;cin>>n>>t;
+    for(int i=1;i<=n;i++)
     {
-        int a;cin>>a;
-        if(a&1) cout<<a<<' ';
-        else cout<<a-1<<' ';//CF对格式的要求不是非常严格，只有单行输出的时候，末尾空格和换行不做严格要求
+        int x;cin>>x;
+        t-=86400-x;
+        if(t<=0) {cout<<i<<endl;break;}
     }
 }
