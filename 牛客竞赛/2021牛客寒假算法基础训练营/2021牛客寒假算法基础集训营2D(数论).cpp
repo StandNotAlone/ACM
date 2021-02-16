@@ -12,7 +12,7 @@ int main()
     {
         ll x,n;scanf("%lld%lld",&x,&n);
         ll temp=sqrt(x);
-        if(n>=temp)
+        if(n>temp)
         {
             ll m=x/n;
             ll cas=temp*2;
