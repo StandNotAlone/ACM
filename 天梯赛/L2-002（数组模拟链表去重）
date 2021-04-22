@@ -1,124 +1,41 @@
-#include<map>
-#include<set>
-#include<cmath>
-#include<queue>
-#include<cstdio>
-#include<string>
-#include<vector>
-#include<cstring>
-#include<fstream>
-#include<iomanip>
-#include<iostream>
-#include<algorithm>
 #include<bits/stdc++.h>
-#define INF 0x7f7f7f7f //2139062143
-#define INF1 0x3f3f3f3f //1061109567
-#define INF2 2147483647
-#define llINF 9223372036854775807
-#define pi 3.141592653589793//23846264338327950254
-#define ft first
-#define sd second
-#define pb push_back
 #define ll long long
-#define vec vector<ll>
-#define mat vector<vector<ll>>
-#define rep(i,n) for(ll i=0;i<(ll)(n);i++)
-#define REP(i,n) for(ll i=1;i<=(ll)(n);i++)
-#define at(x,n) for(auto &x:n)
-//cout<<fixed<<setprecision(6)<<
-//freopen(".in","r",stdin);
-//freopen(".out","w",stdout);
-//ifstream f1("/Users/wangzichao/Documents/wzc.in");
-//ofstream f2("/Users/wangzichao/Documents/wzc.out");
-//ios::sync_with_stdio(false);
-//cin.tie(0);cout.tie(0);
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
-#define local
-#ifdef local
-#endif
-const ll maxn=1e5+7;
-const double eps=1e-10;
-const ll mod=1e9+7;
 
-ll getnum(string s)
-{
-    if(s=="-1")return -1;
-    ll t=0;
-    at(x,s)
-    {
-        t=t*10+x-'0';
+const int N=100010;
+int n,num[N],head=-1;
+string now[N],ne[N];
+map<int,int> m;
+map<string,int> dir;
+int neww[2][N],tot0=0,tot1=0;
+
+int main(){
+    IOS
+    string x;
+    cin>>x>>n;
+    for(int i=0;i<n;i++){
+        cin>>now[i]>>num[i]>>ne[i];
+        if(now[i]==x) head=i;
+        dir[now[i]]=i;
     }
-    return t;
-}
-
-struct Node
-{
-    string s,sn;
-    ll data,next;
-};
-
-ll sum[maxn];//键值出现的次数
-Node node[maxn];
-ll start,n;
-
-
-int main()
-{
-    ios::sync_with_stdio(false);
-    cin.tie(0);cout.tie(0);
-    string s;
-    cin>>s>>n;
-    start=getnum(s);
-    rep(i,n)
-    {
-        string s1,s2;
-        ll t;
-        cin>>s1>>t>>s2;
-        ll num1=getnum(s1),num2=getnum(s2);
-        node[num1].s=s1;
-        node[num1].data=t;
-        node[num1].next=num2;
-        node[num1].sn=s2;
-    }
-    vector<ll>now,del;
-    while(start!=-1)
-    {
-        sum[abs(node[start].data)]++;
-        if(sum[abs(node[start].data)]>1)
-        {
-            del.pb(start);
+    for(int i=head;;i=dir[ne[i]]){
+        if(m.find(abs(num[i]))==m.end()){//abs是不需要加的
+            neww[0][tot0++]=i;
+            m[abs(num[i])]=1;
         }
-        else
-        {
-            now.pb(start);
-        }
-        start=node[start].next;
+        else neww[1][tot1++]=i;
+        if(ne[i]=="-1") break;
     }
-    for(ll i=0;i+1<now.size();i++)
-    {
-        node[now[i]].next=now[i+1];
-        node[now[i]].sn=node[now[i+1]].s;
+    for(int i=0;i+1<tot0;i++){
+        int temp=neww[0][i];
+        cout<<now[temp]<<' '<<num[temp]<<' '<<now[neww[0][i+1]]<<endl;
     }
-    node[now[(ll)now.size()-1]].next=-1;
-    node[now[(ll)now.size()-1]].sn="-1";
-    for(ll i=0;i+1<del.size();i++)
-    {
-        node[del[i]].next=del[i+1];
-        node[del[i]].sn=node[del[i+1]].s;
+    cout<<now[neww[0][tot0-1]]<<' '<<num[neww[0][tot0-1]]<<' '<<-1<<endl;
+    if(!tot1) return 0;
+    for(int i=0;i+1<tot1;i++){
+        int temp=neww[1][i];
+        cout<<now[temp]<<' '<<num[temp]<<' '<<now[neww[1][i+1]]<<endl;
     }
-    if(del.size())
-    {
-        node[del[(ll)del.size()-1]].next=-1;
-        node[del[(ll)del.size()-1]].sn="-1";
-    }
-    at(x,now)
-    {
-        cout<<node[x].s<<' '<<node[x].data<<' '<<node[x].sn<<endl;
-    }
-    at(x,del)
-    {
-        cout<<node[x].s<<' '<<node[x].data<<' '<<node[x].sn<<endl;
-    }
+    cout<<now[neww[1][tot1-1]]<<' '<<num[neww[1][tot1-1]]<<' '<<-1<<endl;
 }
-
-
