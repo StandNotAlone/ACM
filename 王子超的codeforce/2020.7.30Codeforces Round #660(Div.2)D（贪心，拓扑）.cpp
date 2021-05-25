@@ -9,13 +9,11 @@ ll n;
 ll a[maxn],b[maxn];
 ll ru[maxn];//ru[i]保存结点i的入度
 
-int32_t main()
-{
+int main(){
     IOS;
     cin>>n;
     for(ll i=1;i<=n;i++) cin>>a[i];
-    for(ll i=1;i<=n;i++)
-    {
+    for(ll i=1;i<=n;i++){
         cin>>b[i];
         if(b[i]!=-1) ru[b[i]]++;
     }
@@ -24,13 +22,11 @@ int32_t main()
     vector<ll>ans1,ans2;
     for(ll i=1;i<=n;i++)
         if(!ru[i]) Q.push(i);
-    while(Q.size())///拓扑排序过程
-    {
+    while(Q.size()){///拓扑排序过程
         ll now=Q.front();
         Q.pop();
         ll to=b[now];
-        if(to!=-1)
-        {
+        if(to!=-1){
             ru[to]--;
             if(!ru[to]) Q.push(to);
             if(a[now]>0) a[to]+=a[now];//如果当前结点的值是正数，那么加到下一个对应结点的值上
